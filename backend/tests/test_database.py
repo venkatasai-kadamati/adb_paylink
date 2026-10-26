@@ -129,3 +129,56 @@ def test_credit_limit_failure_rolls_back_debit(case):
     assert balances(a,b)=={a:10000,b:900000000000000}
     with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
         assert c.execute('SELECT count(*) FROM paylink.transfers WHERE source_account_id=%s',(a,)).fetchone()[0]==0
+
+def add_holder(actor,account,username):
+    with psycopg.connect(C['DATABASE_URL']) as c:
+        c.execute('SET statement_timeout=5000')
+        return c.execute('SELECT paylink.add_account_holder(%s,%s,%s)',(actor,account,username)).fetchone()[0]
+
+def username(uid):
+    with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+        return c.execute('SELECT username FROM paylink.users WHERE id=%s',(uid,)).fetchone()[0]
+
+def test_add_joint_owner_idempotent_and_authorized(case):
+    u,v,_,a,b=case
+    with pytest.raises(errors.RaiseException,match='do not own'):add_holder(v,a,username(v))
+    with ThreadPoolExecutor(6) as workers:
+        assert set(workers.map(lambda _:add_holder(u,a,username(v)),range(6)))=={v}
+    with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+        assert c.execute('SELECT count(*) FROM paylink.account_holders WHERE account_id=%s',(a,)).fetchone()[0]==2
+    transfer(v,a,b,1)
+    assert balances(a,b)=={a:9999,b:10001}
+
+def test_joint_ownership_limit_serializes_with_account_opening(case):
+    u,v,bank,a,b=case
+    with psycopg.connect(C['DATABASE_URL']) as c:
+        for _ in range(2):c.execute('SELECT paylink.open_account(%s,%s,%s,%s)',(v,bank,'savings','Limit fixture'))
+    def share():
+        try:add_holder(u,a,username(v));return True
+        except errors.RaiseException:return False
+    def open_one():
+        try:
+            with psycopg.connect(C['DATABASE_URL']) as c:
+                c.execute('SELECT paylink.open_account(%s,%s,%s,%s)',(v,bank,'savings','Concurrent fixture'))
+            return True
+        except errors.RaiseException:return False
+    with ThreadPoolExecutor(2) as workers:
+        results=list(workers.map(lambda fn:fn(),[share,open_one]))
+    assert sorted(results)==[False,True]
+    with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+        assert c.execute('SELECT count(*) FROM paylink.account_holders WHERE user_id=%s',(v,)).fetchone()[0]==4
+
+def test_application_schema_and_restricted_privileges():
+    with psycopg.connect(C['DATABASE_URL']) as c:
+        assert {r[0] for r in c.execute("SELECT tablename FROM pg_tables WHERE schemaname='paylink'")}=={'users','banks','bank_accounts','account_holders','transfers'}
+        assert all(r[0] for r in c.execute("SELECT rowsecurity FROM pg_tables WHERE schemaname='paylink'"))
+        for table in ('bank_accounts','account_holders','transfers'):
+            for privilege in ('INSERT','UPDATE','DELETE'):
+                assert not c.execute('SELECT has_table_privilege(current_user,%s,%s)',('paylink.'+table,privilege)).fetchone()[0]
+        for name in ('execute_transfer','open_account','add_account_holder'):
+            assert c.execute("SELECT proconfig FROM pg_proc WHERE pronamespace='paylink'::regnamespace AND proname=%s",(name,)).fetchone()[0]==['search_path=pg_catalog, paylink']
+
+def test_idempotency_is_scoped_to_actor(case):
+    u,v,_,a,b=case;key=uuid4()
+    assert transfer(u,a,b,10,key)!=transfer(v,b,a,10,key)
+    assert balances(a,b)=={a:10000,b:10000}

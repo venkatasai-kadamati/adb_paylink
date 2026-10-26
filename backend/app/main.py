@@ -21,7 +21,7 @@ from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
 ROOT = Path(__file__).resolve().parents[2]
-load_dotenv(ROOT / '.env')
+load_dotenv(os.getenv('PAYLINK_ENV_FILE', str(ROOT / '.env')))
 SECRET = os.environ['JWT_SECRET']
 if len(SECRET) < 32:
     raise RuntimeError('JWT_SECRET must be at least 32 characters')
@@ -89,6 +89,9 @@ class AccountCreate(BaseModel):
     bank_id: UUID
     account_type: Literal['checking','savings']
     label: str = Field(min_length=1, max_length=60)
+
+class HolderCreate(BaseModel):
+    username: str = Field(pattern=r'^[a-z][a-z0-9_]{2,29}$')
 
 class TransferCreate(BaseModel):
     source_account_id: UUID
@@ -190,6 +193,16 @@ def recipients(user:User,q:str=''):
           JOIN paylink.banks b ON b.id=a.bank_id
           WHERE (u.username=%s OR u.email=%s OR u.phone=%s) AND u.id<>%s AND a.active
           ORDER BY a.created_at LIMIT 8''',(q.lower().strip(),q.lower().strip(),q.strip(),user['id'])).fetchall()
+
+@app.post('/api/accounts/{account_id}/holders')
+def add_holder(account_id: UUID, body: HolderCreate, user: User):
+    try:
+        with pool.connection() as c:
+            result = c.execute('SELECT paylink.add_account_holder(%s,%s,%s) AS user_id',
+                               (user['id'], account_id, body.username)).fetchone()
+        return result
+    except errors.RaiseException as e:
+        raise HTTPException(409, e.diag.message_primary)
 
 @app.post('/api/transfers',status_code=201)
 def send(body:TransferCreate,user:User):

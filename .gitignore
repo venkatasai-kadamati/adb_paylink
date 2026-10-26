@@ -12,4 +12,9 @@ artifacts/*.pid
 supabase/.temp/
 *.tsbuildinfo
 .cache/
+.local/
+.env.hosted
+.vercel/
+core
+core.*
 .DS_Store

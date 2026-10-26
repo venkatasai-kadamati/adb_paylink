@@ -1,5 +1,7 @@
 """Live Chromium E2E. Database assertions verify UI writes; test mutations are reversed."""
 import json
+import platform
+from datetime import datetime, timezone
 from pathlib import Path
 from browser_support import launch_chromium
 from uuid import uuid4
@@ -79,10 +81,19 @@ try:
     dialog=page.get_by_role('dialog');dialog.locator('select[name=bank_id]').select_option(label='Meridian Bank')
     dialog.get_by_label('Give it a name').fill('Browser validation account')
     dialog.get_by_role('button',name='Create simulated account').click()
-    expect(page.get_by_text('Browser validation account',exact=True)).to_be_visible()
+    expect(page.get_by_role('button').filter(has_text='Browser validation account')).to_be_visible()
     account=db("SELECT id,balance_cents FROM paylink.bank_accounts WHERE label='Browser validation account'")[0]
     created.append(account[0]);assert account[1]==100000
     record('Simulated account creation persisted with exactly $1,000 funding')
+    page.get_by_role('button',name='Accounts',exact=True).click()
+    page.get_by_role('button',name='Add joint owner',exact=True).click()
+    dialog=page.get_by_role('dialog')
+    dialog.get_by_label('Account to share').select_option(str(account[0]))
+    dialog.get_by_label("New owner's username").fill('siddhardth')
+    dialog.get_by_role('button',name='Confirm joint owner').click()
+    expect(page.get_by_role('dialog')).not_to_be_visible()
+    assert db('SELECT count(*) FROM paylink.account_holders WHERE account_id=%s',(account[0],))[0][0]==2
+    record('Joint owner added through UI; one account and two ownership rows')
     page.get_by_role('button',name='Sign out').click()
     expect(page.get_by_role('heading',name='Welcome back.')).to_be_visible()
     page.locator('.demo-buttons button').filter(has_text='Siddhardth').click()
@@ -92,6 +103,24 @@ try:
     expect(page.get_by_role('button',name='Sai Kadamati Browser validation')).to_be_visible()
     page.screenshot(path=str(ROOT/'artifacts/07-recipient-receipt.png'),full_page=True)
     record('Second signed-in user sees received transfer and shared account')
+    page.get_by_role('button',name='Overview',exact=True).click()
+    expect(page.get_by_role('button').filter(has_text='Browser validation account')).to_be_visible()
+    page.get_by_role('button',name='Move between accounts').click()
+    dialog=page.get_by_role('dialog')
+    dialog.get_by_label('From account').select_option(str(account[0]))
+    dialog.get_by_label('To account').select_option(str(recipient[0]))
+    dialog.get_by_role('textbox',name='Amount',exact=True).fill('0.50')
+    dialog.get_by_placeholder('A little note goes a long way').fill('Browser validation — joint spend')
+    dialog.get_by_role('button',name='Review transfer').click()
+    dialog.get_by_role('button',name='Confirm & send').click()
+    expect(dialog.get_by_role('heading',name='On its way? Already there.')).to_be_visible()
+    transfer_ids.append(db("SELECT id FROM paylink.transfers WHERE memo='Browser validation — joint spend' ORDER BY created_at DESC LIMIT 1")[0][0])
+    assert db('SELECT balance_cents FROM paylink.bank_accounts WHERE id=%s',(account[0],))[0][0]==99950
+    dialog.get_by_role('button',name='Back to your money').click()
+    record('New joint owner can spend the shared balance through UI')
+    page.get_by_role('button',name='Insights',exact=True).click()
+    expect(page.get_by_role('heading',name='A week in motion')).to_be_visible()
+    record('SQL-driven insights render after transfers')
     page.set_viewport_size({'width':390,'height':844})
     page.get_by_role('button',name='Toggle navigation').click()
     page.get_by_role('button',name='Overview',exact=True).click()
@@ -127,4 +156,4 @@ finally:
             c.execute('UPDATE paylink.bank_accounts SET balance_cents=balance_cents-%s WHERE id=%s',(r[2],r[1]))
     for id in created:
         c.execute('DELETE FROM paylink.account_holders WHERE account_id=%s',(id,));c.execute('DELETE FROM paylink.bank_accounts WHERE id=%s',(id,))
- (ROOT/'artifacts/browser-results.json').write_text(json.dumps({'completed':completed,'passed':steps,'javascript_errors':errors,'database':'local PostgreSQL 15, not hosted Supabase','test_data_cleaned':True},indent=2))
+ (ROOT/'artifacts/browser-results.json').write_text(json.dumps({'completed':completed,'passed':steps,'javascript_errors':errors,'database':'local PostgreSQL 16, not hosted Supabase','platform':platform.platform(),'timestamp_utc':datetime.now(timezone.utc).isoformat(),'test_data_cleaned':True},indent=2))

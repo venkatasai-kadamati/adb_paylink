@@ -18,6 +18,8 @@ with psycopg.connect(config['ADMIN_DATABASE_URL']) as c:
         if c.execute('SELECT 1 FROM paylink_meta.migrations WHERE name=%s',(path.name,)).fetchone(): continue
         # Strip migration transaction wrappers; outer connection commits the version marker atomically.
         text=path.read_text().replace('BEGIN;\n','',1).removesuffix('COMMIT;\n')
+        if not text.strip():
+            raise RuntimeError(f'Refusing to mark empty migration as applied: {path.name}')
         c.execute(text)
         c.execute('INSERT INTO paylink_meta.migrations(name) VALUES(%s)',(path.name,))
     if not c.execute("SELECT 1 FROM pg_roles WHERE rolname='paylink_api'").fetchone():
@@ -32,4 +34,5 @@ with psycopg.connect(config['ADMIN_DATABASE_URL']) as c:
         c.execute('CREATE POLICY backend_register ON paylink.users FOR INSERT TO paylink_api WITH CHECK(true)')
     c.execute('GRANT EXECUTE ON FUNCTION paylink.execute_transfer(uuid,uuid,uuid,bigint,text,uuid) TO paylink_api')
     c.execute('GRANT EXECUTE ON FUNCTION paylink.open_account(uuid,uuid,text,text) TO paylink_api')
+    c.execute('GRANT EXECUTE ON FUNCTION paylink.add_account_holder(uuid,uuid,text) TO paylink_api')
 print('Migrations applied; backend role has read/registration and controlled function access. No direct balance updates.')
