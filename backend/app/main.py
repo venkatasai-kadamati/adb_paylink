@@ -33,7 +33,8 @@ pool: ConnectionPool
 async def lifespan(app):
     global pool
     pool = ConnectionPool(os.environ['DATABASE_URL'], min_size=1, max_size=8, open=False,
-                          kwargs={'row_factory': dict_row, 'options': '-c statement_timeout=10000'})
+                          kwargs={'row_factory': dict_row,
+                                  'options': '-c statement_timeout=10000 -c timezone=America/Chicago'})
     pool.open(wait=True)
     yield
     pool.close()
