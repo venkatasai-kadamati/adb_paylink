@@ -1,0 +1,15 @@
+.venv/
+.env
+.env.*
+!.env.example
+frontend/node_modules/
+frontend/.next/
+__pycache__/
+.pytest_cache/
+*.pyc
+artifacts/*.log
+artifacts/*.pid
+supabase/.temp/
+*.tsbuildinfo
+.cache/
+.DS_Store

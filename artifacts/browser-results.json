@@ -1,0 +1,17 @@
+{
+  "completed": true,
+  "passed": [
+    "Insufficient funds blocked with visible feedback",
+    "UI transfer committed: source \u22121234 cents, recipient +1234 cents, one history row",
+    "Reload persistence, activity search, details, and real CSV download",
+    "Own-account transfer through UI",
+    "Simulated account creation persisted with exactly $1,000 funding",
+    "Second signed-in user sees received transfer and shared account",
+    "390px mobile layout, navigation, and no page overflow",
+    "Registration and new-user empty state",
+    "No browser JavaScript errors"
+  ],
+  "javascript_errors": [],
+  "database": "local PostgreSQL 15, not hosted Supabase",
+  "test_data_cleaned": true
+}

@@ -1,0 +1,9 @@
+PASS: Insufficient funds blocked with visible feedback
+PASS: UI transfer committed: source −1234 cents, recipient +1234 cents, one history row
+PASS: Reload persistence, activity search, details, and real CSV download
+PASS: Own-account transfer through UI
+PASS: Simulated account creation persisted with exactly $1,000 funding
+PASS: Second signed-in user sees received transfer and shared account
+PASS: 390px mobile layout, navigation, and no page overflow
+PASS: Registration and new-user empty state
+PASS: No browser JavaScript errors

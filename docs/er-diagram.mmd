@@ -1,0 +1,47 @@
+erDiagram
+ USERS ||--o{ ACCOUNT_HOLDERS : owns
+ BANK_ACCOUNTS ||--|{ ACCOUNT_HOLDERS : has_owners
+ BANKS ||--o{ BANK_ACCOUNTS : maintains
+ USERS ||--o{ TRANSFERS : initiates
+ BANK_ACCOUNTS ||--o{ TRANSFERS : sends_from
+ BANK_ACCOUNTS ||--o{ TRANSFERS : receives_into
+ USERS {
+  uuid id PK
+  text username UK
+  text email UK
+  text phone UK "optional"
+  text full_name
+  text password_hash
+  timestamptz created_at
+ }
+ BANKS {
+  uuid id PK
+  text routing_number UK
+  text name
+ }
+ BANK_ACCOUNTS {
+  uuid id PK
+  uuid bank_id FK
+  text account_number "unique with bank_id"
+  text account_type
+  text label
+  bigint balance_cents
+  bigint opening_balance_cents
+  boolean active
+  timestamptz created_at
+ }
+ ACCOUNT_HOLDERS {
+  uuid user_id PK,FK
+  uuid account_id PK,FK
+  timestamptz joined_at
+ }
+ TRANSFERS {
+  uuid id PK
+  uuid initiated_by FK "unique with idempotency_key"
+  uuid source_account_id FK
+  uuid destination_account_id FK
+  bigint amount_cents
+  text memo
+  uuid idempotency_key
+  timestamptz created_at
+ }

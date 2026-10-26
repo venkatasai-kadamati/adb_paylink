@@ -1,0 +1,16 @@
+digraph PayLink {
+graph [rankdir=LR, bgcolor="#FFFFFF", pad="0.4", nodesep="0.7", ranksep="1.3", fontname="Helvetica"];
+node [shape=plain,fontname="Helvetica"];
+edge [color="#8DA6CA",fontname="Helvetica",fontsize=10,arrowsize=.7];
+users [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>USERS</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid [PK]</TD></TR><TR><TD ALIGN="LEFT">username : text [UNIQUE]</TD></TR><TR><TD ALIGN="LEFT">email : text [UNIQUE]</TD></TR><TR><TD ALIGN="LEFT">phone : text [UNIQUE, nullable]</TD></TR><TR><TD ALIGN="LEFT">full_name : text</TD></TR><TR><TD ALIGN="LEFT">password_hash : text (Argon2id)</TD></TR><TR><TD ALIGN="LEFT">created_at : timestamptz</TD></TR></TABLE>>];
+account_holders [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>ACCOUNT_HOLDERS</B></TD></TR><TR><TD ALIGN="LEFT">user_id : uuid [PK, FK → users]</TD></TR><TR><TD ALIGN="LEFT">account_id : uuid [PK, FK → accounts]</TD></TR><TR><TD ALIGN="LEFT">joined_at : timestamptz</TD></TR></TABLE>>];
+banks [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>BANKS</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid [PK]</TD></TR><TR><TD ALIGN="LEFT">routing_number : text [UNIQUE]</TD></TR><TR><TD ALIGN="LEFT">name : text</TD></TR></TABLE>>];
+bank_accounts [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>BANK_ACCOUNTS</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid [PK]</TD></TR><TR><TD ALIGN="LEFT">bank_id : uuid [FK → banks]</TD></TR><TR><TD ALIGN="LEFT">account_number : text</TD></TR><TR><TD ALIGN="LEFT">account_type : checking | savings</TD></TR><TR><TD ALIGN="LEFT">label : text</TD></TR><TR><TD ALIGN="LEFT">balance_cents : bigint ≥ 0</TD></TR><TR><TD ALIGN="LEFT">opening_balance_cents : bigint ≥ 0</TD></TR><TR><TD ALIGN="LEFT">active : boolean</TD></TR><TR><TD ALIGN="LEFT">created_at : timestamptz</TD></TR><TR><TD ALIGN="LEFT">UNIQUE(bank_id, account_number)</TD></TR></TABLE>>];
+transfers [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>TRANSFERS</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid [PK]</TD></TR><TR><TD ALIGN="LEFT">initiated_by : uuid [FK → users]</TD></TR><TR><TD ALIGN="LEFT">source_account_id : uuid [FK → accounts]</TD></TR><TR><TD ALIGN="LEFT">destination_account_id : uuid [FK → accounts]</TD></TR><TR><TD ALIGN="LEFT">amount_cents : bigint &gt; 0</TD></TR><TR><TD ALIGN="LEFT">memo : text (≤ 140)</TD></TR><TR><TD ALIGN="LEFT">idempotency_key : uuid</TD></TR><TR><TD ALIGN="LEFT">created_at : timestamptz</TD></TR><TR><TD ALIGN="LEFT">UNIQUE(initiated_by, idempotency_key)</TD></TR></TABLE>>];
+users -> account_holders [label="1 : 0..N · ownership"];
+bank_accounts -> account_holders [label="1 : 1..N · holders*"];
+banks -> bank_accounts [label="1 : 0..N · bank"];
+users -> transfers [label="1 : 0..N · initiator"];
+bank_accounts -> transfers [label="1 : 0..N · source"];
+bank_accounts -> transfers [label="1 : 0..N · destination"];
+}

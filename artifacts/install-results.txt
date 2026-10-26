@@ -1,0 +1,65 @@
+Requirement already satisfied: annotated-doc==0.0.5 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 1)) (0.0.5)
+Requirement already satisfied: annotated-types==0.8.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 2)) (0.8.0)
+Requirement already satisfied: anyio==4.15.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 3)) (4.15.1)
+Requirement already satisfied: argon2-cffi==25.1.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 4)) (25.1.0)
+Requirement already satisfied: argon2-cffi-bindings==26.1.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 5)) (26.1.0)
+Requirement already satisfied: certifi==2026.10.23 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 6)) (2026.10.23)
+Requirement already satisfied: cffi==2.1.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 7)) (2.1.1)
+Requirement already satisfied: click==8.5.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 8)) (8.5.0)
+Requirement already satisfied: fastapi==0.162.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 9)) (0.162.0)
+Requirement already satisfied: greenlet==3.5.6 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 10)) (3.5.6)
+Requirement already satisfied: h11==0.16.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 11)) (0.16.0)
+Requirement already satisfied: httpcore==1.0.9 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 12)) (1.0.9)
+Requirement already satisfied: httpx==0.28.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 13)) (0.28.1)
+Requirement already satisfied: idna==3.20 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 14)) (3.20)
+Requirement already satisfied: iniconfig==2.3.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 15)) (2.3.1)
+Requirement already satisfied: opentelemetry-api==1.45.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 16)) (1.45.1)
+Requirement already satisfied: packaging==26.3 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 17)) (26.3)
+Requirement already satisfied: playwright==1.64.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 18)) (1.64.1)
+Requirement already satisfied: pluggy==1.7.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 19)) (1.7.0)
+Requirement already satisfied: psycopg==3.3.6 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 20)) (3.3.6)
+Requirement already satisfied: psycopg-binary==3.3.6 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 21)) (3.3.6)
+Requirement already satisfied: psycopg-pool==3.3.3 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 22)) (3.3.3)
+Requirement already satisfied: pycparser==3.12 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 23)) (3.12)
+Requirement already satisfied: pydantic==2.14.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 24)) (2.14.1)
+Requirement already satisfied: pydantic_core==2.50.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 25)) (2.50.1)
+Requirement already satisfied: pyee==14.0.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 26)) (14.0.0)
+Requirement already satisfied: Pygments==2.21.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 27)) (2.21.0)
+Requirement already satisfied: PyJWT==2.15.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 28)) (2.15.1)
+Requirement already satisfied: pytest==9.1.1 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 29)) (9.1.1)
+Requirement already satisfied: python-dotenv==1.2.4 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 30)) (1.2.4)
+Requirement already satisfied: starlette==1.10.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 31)) (1.10.0)
+Requirement already satisfied: typing-inspection==0.4.4 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 32)) (0.4.4)
+Requirement already satisfied: typing_extensions==4.16.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 33)) (4.16.0)
+Requirement already satisfied: uvicorn==0.54.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 34)) (0.54.0)
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.2
+[notice] To update, run: python -m pip install --upgrade pip
+
+added 34 packages in 11s
+Local PostgreSQL is ready on port 54322.
+Migrations applied; backend role has read/registration and controlled function access. No direct balance updates.
+Synthetic demo seeded. Local usernames: sai / siddhardth. Password documented in README.
+
+> paylink@1.0.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 31ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 162ms
+  Running TypeScript ...
+  Finished TypeScript in 1235ms ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/3) ...
+✓ Generating static pages using 4 workers (3/3) in 423ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+└ ○ /_not-found
+
+
+○  (Static)  prerendered as static content
