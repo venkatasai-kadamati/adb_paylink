@@ -54,7 +54,7 @@ download, and basic SQL-driven insights.</p>
 public app is live at <a href="https://paylink-radiant690s-projects.vercel.app" class="uri">https://paylink-radiant690s-projects.vercel.app</a>. Vercel
 serves Next.js, Render serves FastAPI, and Supabase PostgreSQL 17.11
 hosts the private five-table schema in primary-org/paylink. On this Mac,
-the production build, 25 database/API tests, and 12 grouped Chromium
+the production build, 26 database/API tests, and 13 grouped Chromium
 workflow checks passed. Nine public-browser acceptance groups verified
 the complete hosted path, committed transfer rows and both balance
 deltas, duplicate/rejected requests, and zero reconciliation
@@ -246,13 +246,15 @@ equal joint owner by exact username. This adds one ownership row and no
 funds. It locks the target user before the account, coordinating with
 the four-account allocation limit. Invitation acceptance and revocation
 remain future work.</p>
-<p>New-account creation allocates $1,000 in clearly labeled simulated
-starting funds, with at most four held accounts per user. That
-allocation changes the simulation’s total supply by design. Transfers
-between existing accounts conserve supply. The current design records
-completed transfers only; rejected attempts do not become successful
-history rows. A separate security/audit event model and a full
-double-entry ledger are possible extensions, not present claims.</p>
+<p>Registration atomically creates the user, an Everyday checking
+account with $200 in simulated funds, and its first ownership row.
+Additional account creation also allocates $200, with at most four held
+accounts per user. That allocation changes the simulation’s total supply
+by design. Transfers between existing accounts conserve supply. The
+current design records completed transfers only; rejected attempts do
+not become successful history rows. A separate security/audit event
+model and a full double-entry ledger are possible extensions, not
+present claims.</p>
 <p>PostgreSQL supplies WAL-based durability and transactional recovery.
 Tests demonstrate rollback after balance mutations and on rejected
 operations. They do not establish backup restore, power-failure
@@ -282,7 +284,7 @@ or a general speed guarantee. The benchmark concerns the
 outgoing-history query, not every query used by the UI. Tiny real demo
 datasets may correctly use sequential scans.</p>
 <h1 id="validation-and-limitations">7 Validation and limitations</h1>
-<p>The production Next.js build passed. The 25 Mac database/API checks
+<p>The production Next.js build passed. The 26 Mac database/API checks
 passed, including:</p>
 <ul>
 <li>Atomic debit/credit and supply conservation; insufficient-funds
@@ -354,8 +356,8 @@ layout. Evidence: production build and working public UI.</li>
 <li><strong>Validate and prepare the demonstration.</strong>
 Concurrency, rollback, reconciliation, query plans, screenshots, and
 recording materials. Proposed review: Sai on integrity and plans;
-Siddhardth on browser/demo/documents. Evidence: 25 Mac database/API
-tests, 12 local browser groups, nine hosted groups, and zero
+Siddhardth on browser/demo/documents. Evidence: 26 Mac database/API
+tests, 13 local browser groups, nine hosted groups, and zero
 reconciliation discrepancies.</li>
 </ol>
 <p>These are proposed responsibility assignments for internal knowledge

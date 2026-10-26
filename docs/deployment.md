@@ -27,7 +27,7 @@ The private synthetic recording passwords live in `.local/recording-users.json` 
 
 ## Schema provisioning and future updates
 
-The three checked-in migrations were applied to the newly created dedicated hosted project through Supabase, including FK-compatible owner allocation locks. The restricted role and policies were provisioned separately without putting its password into migration source. The synthetic bank catalog came from supabase/banks.sql. Profiles and accounts were created through the actual public UI with private passwords, then joint ownership through Accounts.
+The four checked-in migrations were applied to the newly created dedicated hosted project through Supabase, including FK-compatible owner allocation locks. The restricted role and policies were provisioned separately without putting its password into migration source. The synthetic bank catalog came from supabase/banks.sql. Profiles and accounts were created through the actual public UI with private passwords, then joint ownership through Accounts.
 
 For a fresh dedicated project, select its real organization/region and obtain the dashboard's current connection details. Apply versioned schema migrations, provision the restricted role, and configure backend/frontend secrets. `scripts/migrate.py` supports an owner ADMIN_DATABASE_URL and dedicated DATABASE_URL, but this Mac deliberately does not hold the hosted owner's password. Use connected Supabase migration tools or securely provide an owner URL on a trusted setup machine. Never repoint seeded local fixture tests or query_evidence.py at hosted data.
 
@@ -40,3 +40,5 @@ For future code changes, push reviewed source to main and inspect Render/Vercel 
 See validation.md, hosted-browser-results.json, hosted-database-evidence.json, hosted-advisors.json, and the actual Supabase screenshot. Security advisors returned no findings; informational unused indexes on the small dataset are not grounds to remove the history indexes without workload evidence.
 
 Render's free service can sleep. Warm the public app and API health, then sign in before recording. Backup/restore, crash recovery, sustained hosted load, a distributed limiter, invitation acceptance/revocation, and an immutable ledger remain future work. No real banks or funds are connected.
+
+The starting_balance_200 migration changes only defaults; existing account balances are preserved. Application revision eed5ec1 introduces automatic $200 checking-account creation during registration and the refined interface.

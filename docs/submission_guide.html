@@ -39,7 +39,7 @@ path is Next.js on Vercel, FastAPI on Render, and the private five-table
 PostgreSQL schema on Supabase in primary-org/paylink. Nine hosted
 browser acceptance groups passed on this Mac, including actual committed
 transfers and zero balance reconciliation differences. The Mac also
-passed 25 database/API tests and 12 local browser workflow groups. See
+passed 26 database/API tests and 13 local browser workflow groups. See
 validation.md for evidence and boundaries.</p>
 <p>One representative records one video for the team; one representative
 submits it. The script below is designed for about eight minutes. This
@@ -137,7 +137,7 @@ Evidence: real user interactions and persisted database rows.</li>
 <li><strong>Validation and midterm delivery.</strong> Run tests on this
 Mac, inspect live screenshots, compare query plans, publish the
 Vercel/Render/Supabase path, and assemble reports and recording
-materials. Evidence: 25 database/API tests, 12 local browser groups,
+materials. Evidence: 26 database/API tests, 13 local browser groups,
 nine hosted browser groups, and zero reconciliation discrepancies. The
 proposed individual review assignments still require team
 confirmation.</li>
@@ -234,15 +234,16 @@ transfers. Controlled functions are in a private schema with fixed
 search paths and no PUBLIC execution. Joint-owner grants lock the target
 user before the account and enforce the same four-account limit as
 account creation.”</p>
-<p>Show the relevant SQL function and the current 25-test Mac result.
+<p>Show the relevant SQL function and the current 26-test Mac result.
 Explain one rollback or concurrency test that the narrator can actually
 describe.</p>
 <h2 id="minutes-to-6-minutes-public-ui-and-database-demo">4 minutes to 6
 minutes Public UI and database demo</h2>
 <p>“I’m signed in as Sai on our public Vercel site. The API runs on
 Render and the data is stored in Supabase. These are synthetic accounts;
-creating one allocates one thousand simulated dollars. Shared expenses
-has two owners but one balance.</p>
+signing up automatically opens a checking account with two hundred
+simulated dollars. Additional accounts also begin with two hundred
+dollars. Shared expenses has two owners but one balance.</p>
 <p>“I’ll send twelve dollars and thirty-four cents to Siddhardth.
 Recipient lookup uses an exact username, email, or phone. The review
 shows the source, destination, amount, and remaining balance. Confirming
@@ -270,10 +271,10 @@ and insight totals, a window function for running balances, and a
 reconciliation query that compares stored balances with opening balances
 plus incoming minus outgoing transfers. The hosted reconciliation
 returns zero differences.</p>
-<p>“On this Mac, twenty-five database and API tests passed, including
+<p>“On this Mac, twenty-six database and API tests passed, including
 concurrent retries, competing spending, opposing transfers,
 authorization, foreign-key lock compatibility, constraints, and
-rollback. Twelve local browser groups and nine hosted browser groups
+rollback. Thirteen local browser groups and nine hosted browser groups
 passed with no JavaScript errors. A local twenty-thousand-row temporary
 benchmark showed the source/time index avoiding a full scan and sort;
 those fixture rows and the temporary index removal were rolled back. The

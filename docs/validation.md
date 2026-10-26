@@ -7,8 +7,8 @@ Current evidence was collected on this Apple Silicon Mac on October 25, 2026 (Am
 | Check | Result | Evidence |
 |---|---|---|
 | Production Next.js build and TypeScript | Passed on Node 24.22.1 | artifacts/build-results.txt |
-| Mac database and API integration | 25 passed; one framework deprecation warning | artifacts/test-results.txt |
-| Local Chromium workflow on Mac | 12 groups passed; no JavaScript errors | artifacts/browser-results.json and browser-run.txt |
+| Mac database and API integration | 26 passed; one framework deprecation warning | artifacts/test-results.txt |
+| Local Chromium workflow on Mac | 13 groups passed; no JavaScript errors | artifacts/browser-results.json and browser-run.txt |
 | Public Chromium workflow on Mac | Nine groups passed; no JavaScript errors | artifacts/hosted-browser-results.json and hosted-browser-run.txt |
 | Local balance reconciliation after fixture cleanup | Zero discrepancies | artifacts/query-evidence.txt |
 | Hosted balance reconciliation | Zero discrepancies | artifacts/hosted-browser-results.json and hosted-database-evidence.json |
@@ -28,7 +28,7 @@ The tests cover atomic debit/credit, eight concurrent same-key calls, conflictin
 
 The hosted script created private synthetic profiles via the browser, opened simulated accounts, and added Siddhardth as an equal joint owner. In two isolated browser sessions it sent $12.34, independently queried the exact event and both account deltas through a read-only restricted database connection, checked retries and rejection paths, reloaded history, downloaded a real CSV, and spent shared funds as the second owner. It also checked insights, 390px mobile layout, reconciliation, and browser errors.
 
-The retained representative event is 38cf87a4-4f82-44ab-bea1-3011579a6a2c. Its captured source balance moved from 100000 to 98766 cents and destination from 100000 to 101234 cents. Subsequent successful payments, including a joint-owner movement, can change the current balances. Use the snapshots in hosted-browser-results.json for those exact before/after assertions; use recording-demo.sql and the receipt ID from a new recorded payment for live demonstration.
+The original example event 38cf87a4-4f82-44ab-bea1-3011579a6a2c remains stored. The latest hosted-browser-results.json records the current test's representative event and exact before/after balances. Later payments, including joint-owner movement, change current balances. Use recording-demo.sql and the receipt ID from the payment you actually record.
 
 Private profile passwords, database credentials, and session cookies are not in Git. The public local-demo password and demo buttons are disabled on the hosted frontend. Hosted synthetic recording data remains intentionally available. Local browser test data was removed and its balance changes reversed.
 
@@ -49,3 +49,7 @@ Hosted correctness checks establish the tested workflow, not production-scale co
 ## Query plan scope
 
 The local helper temporarily inserts 20,000 artificial event rows in a savepoint, measures an outgoing-history SELECT with and without the source/time index, and rolls back both inserts and index removal. It does not alter balances or establish hosted latency. The current Mac run recorded an index scan with three shared buffer hits and 0.009 ms execution versus a sequential scan/top-N sort with 385 hits and 1.614 ms. Read artifacts/query-evidence.txt for the exact plans. These are one-run microbenchmark results, not a claim that all application queries share that plan.
+
+## Updated signup and interface acceptance
+
+New registration automatically opens exactly one $200 Everyday checking account. Both balances begin at 20000 cents, and the initial ownership is inserted atomically. The Mac API suite tests that account-opening failure rolls the entire signup back without issuing a session. The browser suite checks signup funding, $200 additional accounts, readable desktop/mobile layouts, and the hover/click testing guide. Existing hosted balances were compared before and after the default migration and are unchanged. The new hosted onboarding check is recorded separately in artifacts/hosted-onboarding-results.json.

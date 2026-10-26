@@ -5,18 +5,19 @@
     "UI transfer committed: source \u22121234 cents, recipient +1234 cents, one history row",
     "Reload persistence, activity search, details, and real CSV download",
     "Own-account transfer through UI",
-    "Simulated account creation persisted with exactly $1,000 funding",
+    "Simulated account creation persisted with exactly $200 funding",
     "Joint owner added through UI; one account and two ownership rows",
     "Second signed-in user sees received transfer and shared account",
     "New joint owner can spend the shared balance through UI",
     "SQL-driven insights render after transfers",
     "390px mobile layout, navigation, and no page overflow",
-    "Registration and new-user empty state",
+    "Registration automatically creates exactly one $200 checking account",
+    "How to test button provides hover tips and a complete click-through guide",
     "No browser JavaScript errors"
   ],
   "javascript_errors": [],
   "database": "local PostgreSQL 16, not hosted Supabase",
   "platform": "macOS-27.0.1-arm64-arm-64bit",
-  "timestamp_utc": "2026-10-26T03:30:47.341441+00:00",
+  "timestamp_utc": "2026-10-26T04:00:15.462028+00:00",
   "test_data_cleaned": true
 }

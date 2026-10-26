@@ -10,7 +10,7 @@ PayLink is a database-driven banking simulation for sending money to another per
 
 The implementation follows the submitted proposal: Next.js/React with TypeScript for the frontend, Python/FastAPI for the backend, and PostgreSQL with five core tables. The schema and deployment instructions target a private database schema on Supabase. The current implementation supports account registration and sign-in, masked account summaries, exact recipient lookup by username/email/phone, a review-before-send flow, internal transfers, shared ownership, searchable activity, CSV download, and basic SQL-driven insights.
 
-**Status as of October 25, 2026 (America/Chicago):** the public app is live at <https://paylink-radiant690s-projects.vercel.app>. Vercel serves Next.js, Render serves FastAPI, and Supabase PostgreSQL 17.11 hosts the private five-table schema in primary-org/paylink. On this Mac, the production build, 25 database/API tests, and 12 grouped Chromium workflow checks passed. Nine public-browser acceptance groups verified the complete hosted path, committed transfer rows and both balance deltas, duplicate/rejected requests, and zero reconciliation discrepancies. The earlier Linux results are historical; current evidence is from this Mac.
+**Status as of October 25, 2026 (America/Chicago):** the public app is live at <https://paylink-radiant690s-projects.vercel.app>. Vercel serves Next.js, Render serves FastAPI, and Supabase PostgreSQL 17.11 hosts the private five-table schema in primary-org/paylink. On this Mac, the production build, 26 database/API tests, and 13 grouped Chromium workflow checks passed. Nine public-browser acceptance groups verified the complete hosted path, committed transfer rows and both balance deltas, duplicate/rejected requests, and zero reconciliation discrepancies. The earlier Linux results are historical; current evidence is from this Mac.
 
 This report documents the generated implementation. The division between Sai and Siddhardth below is **recommended responsibility and review ownership**, not an assertion that either teammate independently authored the generated work. The team should confirm its own actual contributions and understanding before submitting or recording.
 
@@ -72,7 +72,7 @@ READ COMMITTED plus explicit `FOR UPDATE` locks prevents lost updates for the su
 
 The Accounts screen also allows an existing owner to add a registered equal joint owner by exact username. This adds one ownership row and no funds. It locks the target user before the account, coordinating with the four-account allocation limit. Invitation acceptance and revocation remain future work.
 
-New-account creation allocates $1,000 in clearly labeled simulated starting funds, with at most four held accounts per user. That allocation changes the simulation's total supply by design. Transfers between existing accounts conserve supply. The current design records completed transfers only; rejected attempts do not become successful history rows. A separate security/audit event model and a full double-entry ledger are possible extensions, not present claims.
+Registration atomically creates the user, an Everyday checking account with $200 in simulated funds, and its first ownership row. Additional account creation also allocates $200, with at most four held accounts per user. That allocation changes the simulation's total supply by design. Transfers between existing accounts conserve supply. The current design records completed transfers only; rejected attempts do not become successful history rows. A separate security/audit event model and a full double-entry ledger are possible extensions, not present claims.
 
 PostgreSQL supplies WAL-based durability and transactional recovery. Tests demonstrate rollback after balance mutations and on rejected operations. They do not establish backup restore, power-failure recovery, or hosted point-in-time recovery.
 
@@ -86,7 +86,7 @@ A real local microbenchmark temporarily inserted 20,000 synthetic transfers in a
 
 # 7  Validation and limitations
 
-The production Next.js build passed. The 25 Mac database/API checks passed, including:
+The production Next.js build passed. The 26 Mac database/API checks passed, including:
 
 - Atomic debit/credit and supply conservation; insufficient-funds rollback.
 - Eight simultaneous identical requests returning one transfer; rejection of conflicting payloads.
@@ -110,7 +110,7 @@ Other limits include a latest-200 history/export cap, single-worker rate limitin
 1. **Model the domain.** Proposal, assumptions, five entities, cardinalities, and normalization. Proposed review: Sai on keys/dependencies/integrity; Siddhardth on ER mapping and requirements. Evidence: editable model and design analysis.
 2. **Build the data layer.** DDL, migrations, account opening, joint ownership, transfer invariants, seeds, and SQL exercises. Proposed review: Sai on schema/functions; Siddhardth on catalog/query examples/dictionary. Evidence: schema recreation and current database tests.
 3. **Integrate the application.** Authentication, accounts, transfers, history, export, and insights. Proposed review: Sai on FastAPI/session/SQL paths; Siddhardth on Next.js flows and mobile layout. Evidence: production build and working public UI.
-4. **Validate and prepare the demonstration.** Concurrency, rollback, reconciliation, query plans, screenshots, and recording materials. Proposed review: Sai on integrity and plans; Siddhardth on browser/demo/documents. Evidence: 25 Mac database/API tests, 12 local browser groups, nine hosted groups, and zero reconciliation discrepancies.
+4. **Validate and prepare the demonstration.** Concurrency, rollback, reconciliation, query plans, screenshots, and recording materials. Proposed review: Sai on integrity and plans; Siddhardth on browser/demo/documents. Evidence: 26 Mac database/API tests, 13 local browser groups, nine hosted groups, and zero reconciliation discrepancies.
 
 These are proposed responsibility assignments for internal knowledge transfer. Each teammate should review/run the assigned components, record actual changes and explanations, and revise the attribution accordingly. Generated code alone does not establish an individual's contribution.
 

@@ -21,5 +21,6 @@
     "DOCX",
     "PDF"
   ],
-  "no_clipping_or_overlap_observed": true
+  "no_clipping_or_overlap_observed": true,
+  "review_note": "Final exports re-rendered after $200 signup and UI guide updates; all changed pages visually reviewed; unchanged pages matched prior reviewed renders."
 }

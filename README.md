@@ -2,7 +2,7 @@
 
 A simulated peer-to-peer banking application for **CS 5600 Advanced Database Systems, Fall 2026**. Next.js + TypeScript frontend, FastAPI backend, and a five-relation PostgreSQL schema designed for Supabase. No real banks or funds.
 
-**Live app:** <https://paylink-radiant690s-projects.vercel.app> — Next.js on Vercel, FastAPI on Render, and private PostgreSQL on Supabase primary-org/paylink. Mac validation passed 25 database/API tests, 12 local browser groups, and nine hosted browser groups. Both databases reconcile with zero discrepancies. See [current evidence](docs/validation.md) and [deployment details](docs/deployment.md). Render's free service may need to wake before recording.
+**Live app:** <https://paylink-radiant690s-projects.vercel.app> — Next.js on Vercel, FastAPI on Render, and private PostgreSQL on Supabase primary-org/paylink. Mac validation passed 26 database/API tests, 13 local browser groups, and nine hosted browser groups. Both databases reconcile with zero discrepancies. See [current evidence](docs/validation.md) and [deployment details](docs/deployment.md). Render's free service may need to wake before recording.
 
 Start on macOS with [the local setup guide](docs/local-macos.md). For a new ChatGPT Desktop session, use [the handoff notes](docs/HANDOFF.md).
 

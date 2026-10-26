@@ -22,6 +22,6 @@ with httpx.Client(base_url=BASE,timeout=60,headers={'Origin':BASE}) as c:
  assert any(t['id']=='38cf87a4-4f82-44ab-bea1-3011579a6a2c' for t in rows)
  assert c.get('/api/activity.csv').status_code==200
  result={'checked_at_chicago':datetime.now(ZoneInfo('America/Chicago')).isoformat(),'url':BASE,'passed':True,
- 'checks':['Public proxy/API/database health','Private profile authentication and Secure HttpOnly cookie','Retained receipt and shared ownership','Latest code America/Chicago calendar buckets','History and CSV reads'],'application_commit':'e541eb6e180c1b6445aee210a1ff34277f91649d'}
+ 'checks':['Public proxy/API/database health','Private profile authentication and Secure HttpOnly cookie','Retained receipt and shared ownership','Latest code America/Chicago calendar buckets','History and CSV reads'],'application_commit':'eed5ec1f73b8bb74120555a227e0f3b782365c67'}
 (ROOT/'artifacts/hosted-release-check.json').write_text(json.dumps(result,indent=2)+'\n')
 print('Hosted release check passed, including Chicago calendar boundaries and persisted receipt.')

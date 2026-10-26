@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-10-26T03:48:59.270168+00:00",
+  "timestamp_utc": "2026-10-26T04:03:30.782936+00:00",
   "project_ref": "wktoypofpksgbjwtadrn",
   "identity": {
     "current_user": "paylink_api",
@@ -209,15 +209,21 @@
   ],
   "balances": [
     {
+      "id": "065be0b6-d822-42b9-9157-81f0c373b71e",
+      "label": "Everyday checking",
+      "balance_cents": 20000,
+      "opening_balance_cents": 20000
+    },
+    {
       "id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
       "label": "Everyday checking",
-      "balance_cents": 101334,
+      "balance_cents": 102668,
       "opening_balance_cents": 100000
     },
     {
       "id": "7b072aff-8007-44b1-a899-f7051cc79a70",
       "label": "Everyday checking",
-      "balance_cents": 98766,
+      "balance_cents": 97432,
       "opening_balance_cents": 100000
     },
     {
@@ -234,6 +240,10 @@
     }
   ],
   "owners": [
+    {
+      "label": "Everyday checking",
+      "username": "jordan_ec5ae017"
+    },
     {
       "label": "Everyday checking",
       "username": "sai"
@@ -265,6 +275,27 @@
     },
     {
       "id": "7f4c5dd5-faec-4598-96ba-508635434aae",
+      "source_account_id": "d1e46870-2d5d-49c2-a496-4ef1a2c2544f",
+      "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+      "amount_cents": 100,
+      "memo": "Hosted joint-owner acceptance"
+    },
+    {
+      "id": "1ded894a-5bd7-443f-816d-8e1d328ba3f2",
+      "source_account_id": "7b072aff-8007-44b1-a899-f7051cc79a70",
+      "destination_account_id": "d1e46870-2d5d-49c2-a496-4ef1a2c2544f",
+      "amount_cents": 100,
+      "memo": "Test $1 bill transfer"
+    },
+    {
+      "id": "c482d3d3-69e5-4c4d-9499-dcb4ef8245b2",
+      "source_account_id": "7b072aff-8007-44b1-a899-f7051cc79a70",
+      "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+      "amount_cents": 1234,
+      "memo": "Hosted acceptance 51868137"
+    },
+    {
+      "id": "f6bc43b1-5de4-49f3-bfaf-808be196eb57",
       "source_account_id": "d1e46870-2d5d-49c2-a496-4ef1a2c2544f",
       "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
       "amount_cents": 100,

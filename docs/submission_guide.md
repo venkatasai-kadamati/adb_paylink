@@ -5,7 +5,7 @@ author: "Sai Kadamati and Siddhardth"
 
 # Recording readiness
 
-The public app is live at <https://paylink-radiant690s-projects.vercel.app>. Its path is Next.js on Vercel, FastAPI on Render, and the private five-table PostgreSQL schema on Supabase in primary-org/paylink. Nine hosted browser acceptance groups passed on this Mac, including actual committed transfers and zero balance reconciliation differences. The Mac also passed 25 database/API tests and 12 local browser workflow groups. See validation.md for evidence and boundaries.
+The public app is live at <https://paylink-radiant690s-projects.vercel.app>. Its path is Next.js on Vercel, FastAPI on Render, and the private five-table PostgreSQL schema on Supabase in primary-org/paylink. Nine hosted browser acceptance groups passed on this Mac, including actual committed transfers and zero balance reconciliation differences. The Mac also passed 26 database/API tests and 13 local browser workflow groups. See validation.md for evidence and boundaries.
 
 One representative records one video for the team; one representative submits it. The script below is designed for about eight minutes. This duration is a practical suggestion, not a claim about an instructor-imposed limit. Keep the public app and the actual Supabase project visible during the database demo. No real money or bank integrations are involved.
 
@@ -35,7 +35,7 @@ Safe narration: “Sai's proposed review focus is the transaction and backend la
 1. **Domain and design.** Define the simulation, five entities, one-to-many bank/account relationship, many-to-many ownership, candidate keys, and normalization assumptions. Evidence: editable ER diagram and database-design analysis. The first increment explains the model before implementation.
 2. **Reliable database layer.** Add versioned migrations, PK/FK/UNIQUE/CHECK constraints, synthetic bank catalog, atomic account opening, joint-owner grants, and the transfer function. Evidence: runnable SQL, limited backend role, and reconciliation. This builds a database that can enforce its supported invariants.
 3. **End to end application.** Connect FastAPI sessions to Next.js registration, accounts, exact recipient lookup, transfer review and confirmation, own-account movement, history, CSV, and insights. Evidence: real user interactions and persisted database rows.
-4. **Validation and midterm delivery.** Run tests on this Mac, inspect live screenshots, compare query plans, publish the Vercel/Render/Supabase path, and assemble reports and recording materials. Evidence: 25 database/API tests, 12 local browser groups, nine hosted browser groups, and zero reconciliation discrepancies. The proposed individual review assignments still require team confirmation.
+4. **Validation and midterm delivery.** Run tests on this Mac, inspect live screenshots, compare query plans, publish the Vercel/Render/Supabase path, and assemble reports and recording materials. Evidence: 26 database/API tests, 13 local browser groups, nine hosted browser groups, and zero reconciliation discrepancies. The proposed individual review assignments still require team confirmation.
 
 # Future milestones 5 through 7
 
@@ -81,11 +81,11 @@ Open the editable diagram in diagrams.net. Point to the bridge, composite key, a
 
 “The backend database role cannot directly update balances or insert transfers. Controlled functions are in a private schema with fixed search paths and no PUBLIC execution. Joint-owner grants lock the target user before the account and enforce the same four-account limit as account creation.”
 
-Show the relevant SQL function and the current 25-test Mac result. Explain one rollback or concurrency test that the narrator can actually describe.
+Show the relevant SQL function and the current 26-test Mac result. Explain one rollback or concurrency test that the narrator can actually describe.
 
 ## 4 minutes to 6 minutes Public UI and database demo
 
-“I’m signed in as Sai on our public Vercel site. The API runs on Render and the data is stored in Supabase. These are synthetic accounts; creating one allocates one thousand simulated dollars. Shared expenses has two owners but one balance.
+“I’m signed in as Sai on our public Vercel site. The API runs on Render and the data is stored in Supabase. These are synthetic accounts; signing up automatically opens a checking account with two hundred simulated dollars. Additional accounts also begin with two hundred dollars. Shared expenses has two owners but one balance.
 
 “I’ll send twelve dollars and thirty-four cents to Siddhardth. Recipient lookup uses an exact username, email, or phone. The review shows the source, destination, amount, and remaining balance. Confirming gives us a transfer ID.
 
@@ -99,7 +99,7 @@ Before sending, record both actual balances. Afterward, copy the new transfer ID
 
 “We use joins for bank and ownership details, aggregation for account and insight totals, a window function for running balances, and a reconciliation query that compares stored balances with opening balances plus incoming minus outgoing transfers. The hosted reconciliation returns zero differences.
 
-“On this Mac, twenty-five database and API tests passed, including concurrent retries, competing spending, opposing transfers, authorization, foreign-key lock compatibility, constraints, and rollback. Twelve local browser groups and nine hosted browser groups passed with no JavaScript errors. A local twenty-thousand-row temporary benchmark showed the source/time index avoiding a full scan and sort; those fixture rows and the temporary index removal were rolled back. The timings describe one local run, not hosted performance.”
+“On this Mac, twenty-six database and API tests passed, including concurrent retries, competing spending, opposing transfers, authorization, foreign-key lock compatibility, constraints, and rollback. Thirteen local browser groups and nine hosted browser groups passed with no JavaScript errors. A local twenty-thousand-row temporary benchmark showed the source/time index avoiding a full scan and sort; those fixture rows and the temporary index removal were rolled back. The timings describe one local run, not hosted performance.”
 
 Run the read-only reconciliation query in Supabase. Show artifacts/test-results.txt and hosted-browser-results.json. Use the current query-evidence.txt if discussing exact timings. Do not claim backup restoration or production-scale load tests were completed.
 

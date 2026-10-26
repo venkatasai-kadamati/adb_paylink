@@ -2,22 +2,22 @@
   "completed": true,
   "url": "https://paylink-radiant690s-projects.vercel.app",
   "platform": "macOS-27.0.1-arm64-arm-64bit",
-  "timestamp_utc": "2026-10-26T03:34:09.885517+00:00",
+  "timestamp_utc": "2026-10-26T04:02:06.097271+00:00",
   "database": "Supabase PostgreSQL 17.11",
   "project_ref": "wktoypofpksgbjwtadrn",
   "synthetic_recording_data_retained": true,
   "representative_transfer": {
-    "id": "38cf87a4-4f82-44ab-bea1-3011579a6a2c",
+    "id": "c482d3d3-69e5-4c4d-9499-dcb4ef8245b2",
     "amount_cents": 1234,
     "source_account_id": "7b072aff-8007-44b1-a899-f7051cc79a70",
     "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
     "before_cents": {
-      "7b072aff-8007-44b1-a899-f7051cc79a70": 100000,
-      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 100000
+      "7b072aff-8007-44b1-a899-f7051cc79a70": 98666,
+      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 101334
     },
     "after_cents": {
-      "7b072aff-8007-44b1-a899-f7051cc79a70": 98766,
-      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 101234
+      "7b072aff-8007-44b1-a899-f7051cc79a70": 97432,
+      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 102568
     }
   },
   "reconciliation_discrepancies": 0,

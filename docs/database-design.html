@@ -39,6 +39,9 @@ nickname per owner. All joint owners have equal spending permission. A
 transfer has exactly one source, one destination, and one initiating
 user. Only completed transfers are stored; a rejected transfer rolls
 back and is not represented as a completed or pending row.</p>
+<p>New profiles automatically receive a $200 checking account; the
+profile, account, and holder commit or roll back together. Additional
+accounts also open with $200, while existing balances are preserved.</p>
 <p>The application schema has exactly five base relations, matching the
 proposal. It runs on hosted Supabase PostgreSQL 17.11 in
 primary-org/paylink; independent Mac integration tests use isolated

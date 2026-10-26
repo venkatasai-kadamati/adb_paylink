@@ -1,5 +1,5 @@
 {
-  "checked_at_chicago": "2026-10-25T22:48:58.811978-05:00",
+  "checked_at_chicago": "2026-10-25T23:03:33.873083-05:00",
   "url": "https://paylink-radiant690s-projects.vercel.app",
   "passed": true,
   "checks": [
@@ -9,5 +9,5 @@
     "Latest code America/Chicago calendar buckets",
     "History and CSV reads"
   ],
-  "application_commit": "e541eb6e180c1b6445aee210a1ff34277f91649d"
+  "application_commit": "eed5ec1f73b8bb74120555a227e0f3b782365c67"
 }

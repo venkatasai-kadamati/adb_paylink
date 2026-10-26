@@ -4,6 +4,8 @@
 
 PayLink is a **USD-only simulation**. There are no real bank links, payment networks, withdrawals, fees, currency conversion, password recovery, or real account numbers. An account number is unique only within its bank. A bank routing number is globally unique in this model. A label is a property of the shared account, not a separate nickname per owner. All joint owners have equal spending permission. A transfer has exactly one source, one destination, and one initiating user. Only completed transfers are stored; a rejected transfer rolls back and is not represented as a completed or pending row.
 
+New profiles automatically receive a $200 checking account; the profile, account, and holder commit or roll back together. Additional accounts also open with $200, while existing balances are preserved.
+
 The application schema has exactly five base relations, matching the proposal. It runs on hosted Supabase PostgreSQL 17.11 in primary-org/paylink; independent Mac integration tests use isolated Homebrew PostgreSQL 16.15. `paylink_meta.migrations` records deployment versions and is not a sixth domain entity. `paylink` is private: it must not be added to the exposed Supabase Data API schemas.
 
 ## Editable conceptual and logical model
