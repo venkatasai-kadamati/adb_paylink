@@ -1,10 +1,10 @@
 {
   "completed": true,
   "url": "https://paylink-radiant690s-projects.vercel.app",
-  "timestamp_utc": "2026-10-26T04:01:55.206012+00:00",
+  "timestamp_utc": "2026-10-26T04:07:53.333452+00:00",
   "passed": [
     "Signed-out testing guide works on hover and click",
-    "Fresh profile registered through the public UI",
+    "Private onboarding profile signed in",
     "Exactly one $200 checking account and ownership row persisted in Supabase",
     "Removed wording absent; navigation and account labels use readable type sizes",
     "Signed-in guide includes recipient lookup, review, history, CSV, joint ownership and safeguards",

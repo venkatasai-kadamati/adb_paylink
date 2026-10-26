@@ -1,5 +1,5 @@
 PASS: Signed-out testing guide works on hover and click
-PASS: Fresh profile registered through the public UI
+PASS: Private onboarding profile signed in
 PASS: Exactly one $200 checking account and ownership row persisted in Supabase
 PASS: Removed wording absent; navigation and account labels use readable type sizes
 PASS: Signed-in guide includes recipient lookup, review, history, CSV, joint ownership and safeguards
