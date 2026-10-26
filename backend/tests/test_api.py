@@ -45,13 +45,17 @@ def test_registered_workflow_authorization_insights_csv():
     from dotenv import dotenv_values
     C=dotenv_values(Path(__file__).resolve().parents[2]/'.env')
     suffix=uuid4().hex[:10];name='api_'+suffix;other='other_'+suffix
-    ids=[];account_ids=[]
+    ids=[];account_ids=[];starter_ids=[]
     try:
         with TestClient(app) as c, TestClient(app) as d:
             for client,username in [(c,name),(d,other)]:
                 r=client.post('/api/auth/register',json={'username':username,'email':username+'@test.dev','full_name':'API Test','password':'Test!workflow2026','phone':None})
                 assert r.status_code==201,r.text
                 ids.append(r.json()['id'])
+                starter=client.get('/api/accounts').json()
+                assert len(starter)==1 and starter[0]['label']=='Everyday checking'
+                assert starter[0]['balance_cents']==20000 and starter[0]['holder_count']==1
+                starter_ids.append(starter[0]['id'])
             assert c.post('/api/auth/register',json={'username':name,'email':name+'@test.dev','full_name':'API Test','password':'Test!workflow2026'}).status_code==409
             bank=c.get('/api/banks').json()[0]['id']
             for client,label in [(c,'Checking'),(c,'Savings'),(d,'Recipient')]:
@@ -83,5 +87,38 @@ def test_registered_workflow_authorization_insights_csv():
         with psycopg.connect(C['ADMIN_DATABASE_URL']) as conn:
             conn.execute('DELETE FROM paylink.transfers WHERE initiated_by=ANY(%s::uuid[])',(ids,))
             conn.execute('DELETE FROM paylink.account_holders WHERE user_id=ANY(%s::uuid[])',(ids,))
-            conn.execute('DELETE FROM paylink.bank_accounts WHERE id=ANY(%s::uuid[])',(account_ids,))
+            conn.execute('DELETE FROM paylink.bank_accounts WHERE id=ANY(%s::uuid[])',(account_ids+starter_ids,))
             conn.execute('DELETE FROM paylink.users WHERE id=ANY(%s::uuid[])',(ids,))
+
+def test_signup_rolls_back_profile_when_account_setup_fails():
+    from uuid import uuid4
+    from pathlib import Path
+    from dotenv import dotenv_values
+    import psycopg
+    from psycopg import errors
+    C=dotenv_values(Path(__file__).resolve().parents[2]/'.env')
+    username='rollback_'+uuid4().hex[:10]
+    # A local test trigger fails for this synthetic username after account
+    # creation starts, proving that user, account and holder all roll back.
+    with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+        c.execute("""CREATE FUNCTION paylink.test_signup_failure() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN
+          IF EXISTS(SELECT 1 FROM paylink.users WHERE id=NEW.user_id AND username LIKE 'rollback_%') THEN
+            RAISE EXCEPTION 'Test account setup failure' USING ERRCODE='23514';
+          END IF;
+          RETURN NEW;
+        END $$""")
+        c.execute('CREATE TRIGGER test_signup_failure BEFORE INSERT ON paylink.account_holders FOR EACH ROW EXECUTE FUNCTION paylink.test_signup_failure()')
+        before=c.execute('SELECT count(*) FROM paylink.bank_accounts').fetchone()[0]
+    try:
+        with TestClient(app,raise_server_exceptions=False) as client:
+            response=client.post('/api/auth/register',json={'username':username,'email':username+'@test.dev','full_name':'Rollback Test','password':'Test!workflow2026'})
+            assert response.status_code==503
+            assert 'paylink_session' not in response.cookies
+        with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+            assert c.execute('SELECT count(*) FROM paylink.users WHERE username=%s',(username,)).fetchone()[0]==0
+            assert c.execute('SELECT count(*) FROM paylink.bank_accounts').fetchone()[0]==before
+    finally:
+        with psycopg.connect(C['ADMIN_DATABASE_URL']) as c:
+            c.execute('DROP TRIGGER test_signup_failure ON paylink.account_holders')
+            c.execute('DROP FUNCTION paylink.test_signup_failure()')

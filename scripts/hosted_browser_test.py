@@ -118,12 +118,12 @@ try:
     memo='Hosted acceptance '+uuid4().hex[:8]
     dialog.get_by_placeholder('A little note goes a long way').fill(memo)
     dialog.get_by_role('button',name='Review transfer').click()
-    expect(dialog.get_by_role('heading',name='One last look.')).to_be_visible()
+    expect(dialog.get_by_role('heading',name='Review your transfer')).to_be_visible()
     screenshot(sai,'03-review')
     with sai.expect_request(lambda r:r.url.endswith('/api/transfers') and r.method=='POST') as request:
         dialog.get_by_role('button',name='Confirm & send').click()
     payload=request.value.post_data_json
-    expect(dialog.get_by_role('heading',name='On its way? Already there.')).to_be_visible(timeout=20000)
+    expect(dialog.get_by_role('heading',name='Transfer completed')).to_be_visible(timeout=20000)
     row=db('SELECT id::text,amount_cents FROM paylink.transfers WHERE idempotency_key=%s',(payload['idempotency_key'],))[0]
     assert row[1]==1234
     after=dict(db('SELECT id::text,balance_cents FROM paylink.bank_accounts WHERE id IN(%s,%s)',(source,dest)))
@@ -142,7 +142,7 @@ try:
     assert dict(db('SELECT id::text,balance_cents FROM paylink.bank_accounts WHERE id IN(%s,%s)',(source,dest)))==after
     record('Hosted identical retries return one ID; changed payload, non-owner and insufficient funds rejected without balance changes')
     evidence['representative_transfer']={'id':row[0],'amount_cents':1234,'source_account_id':source,'destination_account_id':dest,'before_cents':before,'after_cents':after}
-    dialog.get_by_role('button',name='Back to your money').click()
+    dialog.get_by_role('button',name='Back to overview').click()
     sai.reload();sai.get_by_role('button',name='Activity',exact=True).click()
     sai.get_by_role('textbox',name='Search activity').fill(memo)
     sai.get_by_role('button').filter(has_text=memo).click()
@@ -163,8 +163,8 @@ try:
     dialog.get_by_role('textbox',name='Amount',exact=True).fill('1.00')
     dialog.get_by_placeholder('A little note goes a long way').fill('Hosted joint-owner acceptance')
     dialog.get_by_role('button',name='Review transfer').click();dialog.get_by_role('button',name='Confirm & send').click()
-    expect(dialog.get_by_role('heading',name='On its way? Already there.')).to_be_visible(timeout=20000)
-    dialog.get_by_role('button',name='Back to your money').click()
+    expect(dialog.get_by_role('heading',name='Transfer completed')).to_be_visible(timeout=20000)
+    dialog.get_by_role('button',name='Back to overview').click()
     record('Second owner spends shared funds through the own-account transfer UI')
     sid.get_by_role('button',name='Insights',exact=True).click()
     expect(sid.get_by_role('heading',name='A week in motion')).to_be_visible()

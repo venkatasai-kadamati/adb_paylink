@@ -141,8 +141,16 @@ def register(body: Register, response: Response):
             row = c.execute('''INSERT INTO paylink.users(username,email,phone,full_name,password_hash)
                 VALUES(%s,%s,%s,%s,%s) RETURNING id,username,full_name''',
                 (body.username,body.email,body.phone,body.full_name,hashed)).fetchone()
+            bank = c.execute('SELECT id FROM paylink.banks ORDER BY name,id LIMIT 1').fetchone()
+            if not bank:
+                raise HTTPException(503, 'Account setup is temporarily unavailable. Please try again later.')
+            # The profile, funded account and first ownership row commit together.
+            c.execute('SELECT paylink.open_account(%s,%s,%s,%s)',
+                      (row['id'], bank['id'], 'checking', 'Everyday checking'))
     except errors.UniqueViolation:
         raise HTTPException(409,'Username, email, or phone already registered')
+    except (errors.CheckViolation, errors.RaiseException, errors.ForeignKeyViolation):
+        raise HTTPException(503, 'Account setup is temporarily unavailable. Please try again later.')
     session(response,row['id'])
     return row
 
