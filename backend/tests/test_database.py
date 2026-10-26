@@ -182,3 +182,19 @@ def test_idempotency_is_scoped_to_actor(case):
     u,v,_,a,b=case;key=uuid4()
     assert transfer(u,a,b,10,key)!=transfer(v,b,a,10,key)
     assert balances(a,b)=={a:10000,b:10000}
+
+def test_owner_allocation_lock_allows_unrelated_transfer_fk_check(case):
+    # Holding add_holder's target-user lock must not block a transfer involving
+    # other accounts by that user: INSERT transfers needs FK KEY SHARE on actor.
+    u,v,bank,a,b=case
+    with psycopg.connect(C['DATABASE_URL']) as c:
+        third=c.execute('SELECT paylink.open_account(%s,%s,%s,%s)',(u,bank,'savings','FK lock fixture')).fetchone()[0]
+    def send_while_grant_open():
+        with psycopg.connect(C['DATABASE_URL']) as c:
+            c.execute('SET statement_timeout=2000')
+            c.execute('SELECT paylink.execute_transfer(%s,%s,%s,100,%s,%s)',(u,a,third,'FK lock compatibility',uuid4()))
+    with psycopg.connect(C['DATABASE_URL']) as grant:
+        grant.execute('SELECT paylink.add_account_holder(%s,%s,%s)',(v,b,username(u)))
+        with ThreadPoolExecutor(1) as worker:
+            worker.submit(send_while_grant_open).result(timeout=4)
+    assert balances(a,b)=={a:9900,b:10000}
