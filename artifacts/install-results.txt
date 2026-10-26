@@ -33,11 +33,13 @@ Requirement already satisfied: typing-inspection==0.4.4 in ./.venv/lib/python3.1
 Requirement already satisfied: typing_extensions==4.16.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 33)) (4.16.0)
 Requirement already satisfied: uvicorn==0.54.0 in ./.venv/lib/python3.12/site-packages (from -r backend/requirements.txt (line 34)) (0.54.0)
 
-[notice] A new release of pip is available: 25.0.1 -> 26.2.2
-[notice] To update, run: python -m pip install --upgrade pip
+added 29 packages, and audited 30 packages in 3s
 
-added 34 packages in 11s
-Local PostgreSQL is ready on port 54322.
+6 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Configured local PostgreSQL is ready on port 54322.
 Migrations applied; backend role has read/registration and controlled function access. No direct balance updates.
 Synthetic demo seeded. Local usernames: sai / siddhardth. Password documented in README.
 
@@ -46,15 +48,15 @@ Synthetic demo seeded. Local usernames: sai / siddhardth. Password documented in
 
 ▲ Next.js 16.4.3 (Turbopack)
 - Environments: .env.local
-✓ Running next.config.ts took 31ms
+✓ Running next.config.ts took 568ms
 
   Creating an optimized production build ...
-✓ Compiled successfully in 162ms
+✓ Compiled successfully in 149ms
   Running TypeScript ...
-  Finished TypeScript in 1235ms ...
+  Finished TypeScript in 492ms ...
   Collecting page data using 4 workers ...
   Generating static pages using 4 workers (0/3) ...
-✓ Generating static pages using 4 workers (3/3) in 423ms
+✓ Generating static pages using 4 workers (3/3) in 176ms
   Finalizing page optimization ...
 
 Route (app)

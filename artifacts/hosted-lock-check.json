@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "target": "Supabase paylink",
+  "check": "Open joint-owner grant does not block unrelated transfer FK key-share check",
+  "writes_rolled_back": true,
+  "balances_ownership_and_transfer_rows_unchanged": true
+}

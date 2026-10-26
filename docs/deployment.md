@@ -1,93 +1,42 @@
-# Public deployment: Supabase + Render + Vercel
+# PayLink hosted deployment
 
-**Current state:** no public deployment or hosted Supabase connection has been created or verified in this session. The requested destination is organization **primary-org**, suggested project name **paylink**. Organization membership and billing/region availability must be confirmed in the connected account. This document is a deployment recipe, not proof of deployment.
+As of October 25, 2026 (America/Chicago), the public application is deployed and verified:
 
-## 1. Connect the accounts
-
-In ChatGPT's Apps settings, look for Supabase and connect/authorize the organization. Enable the app for the chat if supported. The Supabase mention/tag alone did not expose any tools in this session. If the app is not offered, use the Supabase dashboard flow below. Do not send passwords, access tokens, database URLs containing passwords, or service-role keys in chat.
-
-Sign in to Render and Vercel and authorize access to `venkatasai-kadamati/adb_paylink`. Both can import a GitHub repository through their dashboards. No hosting-provider credentials or tools are currently injected into this environment.
-
-The repository was empty when work began. The application, database scripts, and documents are now prepared for Git-based setup; use the current `main` branch when importing it into hosting providers. Do not upload `.env`, `.venv`, `.next`, or `node_modules`.
-
-## 2. Create or select the Supabase project
-
-In the Supabase dashboard, choose primary-org. Create project `paylink` (or select an existing project dedicated to this simulation). Select the desired region and generate a strong database password. Keep that password in your password manager and secure environment settings.
-
-From the project's database **Connect** information, obtain an admin connection for migration. For machines without IPv6, use the dashboard's **session pooler**, port 5432. Use session pooling, not transaction pooling, for the initial role/migration setup. Copy the actual host, project reference, and connection syntax; do not guess a regional hostname. Percent-encode special characters in URL passwords.
-
-On a trusted setup machine, configure ignored `.env` or securely injected process variables:
-
-| Variable | Purpose |
+| Component | Destination |
 |---|---|
-| `ADMIN_DATABASE_URL` | Owner connection for one-time migration/provisioning only. |
-| `DATABASE_URL` | Dedicated backend role connection, initially using a new strong password you choose for `paylink_api`. |
-| `JWT_SECRET` | Random secret of at least 32 characters; Render can generate this. |
-| `APP_ORIGIN` | Exact final Vercel HTTPS origin, without trailing slash. |
-| `COOKIE_SECURE` | `true` for HTTPS deployment. |
+| App | https://paylink-radiant690s-projects.vercel.app |
+| API health | https://paylink-api-xgfo.onrender.com/api/health |
+| Supabase | primary-org / paylink / wktoypofpksgbjwtadrn / us-east-2 |
+| Render | Venkatasai's workspace / paylink-api / srv-dbfciua9lscs739js0rg / Ohio / free |
+| Vercel | radiant690's projects / paylink / prj_6Zkso4Gte1Rx5WEf0QvaPRkU2MMI / production |
+| Source | venkatasai-kadamati/adb_paylink / main |
 
-Direct DB username: `paylink_api`. Session-pooler username: `paylink_api.<actual-project-ref>`. Both are supported by the migration helper. The URL should enable certificate validation, e.g. `sslmode=verify-full&sslrootcert=system` with a recent libpq. If the provider supplies a CA certificate, use its documented CA file and `verify-full`; never disable TLS verification to make a connection pass.
+The initial hosted application commit is e20a095; 0fec3a6 adds reproducible hosted acceptance; e541eb6 explicitly initializes pooled sessions to enforce America/Chicago calendar boundaries after the pooler ignored startup timezone options. The latest deploy IDs and observed source revision are in artifacts/deployment-evidence.json. Later documentation-only commits do not change application behavior. Always inspect the current deployment before attributing a test to a newer source revision.
 
-`migrate.py` reads process variables first and `.env` second. It creates the `paylink_api` role with the password in DATABASE_URL on first provisioning. It does not overwrite an existing role's password. If the role already exists with a different credential, rotate it deliberately through the provider and update the backend binding.
+## Security and connection configuration
 
-Run only against the selected dedicated project:
+The schema is private `paylink`, containing exactly users, banks, bank_accounts, account_holders, and transfers. It is not exposed through the Supabase Data API. All five tables enable RLS. FastAPI uses a dedicated `paylink_api` login with SELECT, user registration INSERT, and execution of the three controlled functions. It has no direct balance UPDATE, ownership INSERT, or transfer INSERT privileges. The actor UUID is derived from the verified backend session; the role is a trusted service identity and must never be exposed to clients.
 
-```bash
-.venv/bin/python scripts/migrate.py
-```
+The Mac cannot resolve/use this project's direct IPv6 database endpoint, so the verified connection uses the dashboard-provided IPv4 session pooler at aws-0-us-east-2.pooler.supabase.com:5432. The pooler username is paylink_api.wktoypofpksgbjwtadrn. Passwords are generated privately. Connections use `sslmode=verify-full` and the official public CA in backend/certs/supabase-ca.crt. The certificate's upstream link is recorded beside it. Do not replace verification with `sslmode=require` to hide a trust failure.
 
-This applies the migration once, creates the private schema and role, grants limited access, and sets backend RLS policies. It does not remove existing data. Keep `paylink` out of Supabase's exposed Data API schemas. Neither an anon key nor a service-role HTTP key is needed in the frontend or backend. The app uses direct PostgreSQL from FastAPI by design.
+Render stores DATABASE_URL and JWT_SECRET privately. Its DATABASE_URL certificate path is `/app/backend/certs/supabase-ca.crt`, copied into the image. APP_ORIGIN is the exact public Vercel origin above; COOKIE_SECURE=true. No admin connection is installed on the long-running API. The Docker command uses exec so termination signals reach Uvicorn. The service has one worker and free-plan limitations.
 
-Use SQL Editor to confirm:
+Vercel uses frontend as its root, Node 24, `npm ci`, and `npm run build`. BACKEND_URL points to the Render API; NEXT_PUBLIC_DEMO_ENABLED=false. Production is publicly accessible. BACKEND_URL is compiled into Next.js rewrites, so changing it requires a rebuild. Database URLs, JWT secrets, and service keys must never be NEXT_PUBLIC variables.
 
-```sql
-select table_name from information_schema.tables
-where table_schema='paylink' and table_type='BASE TABLE' order by table_name;
--- account_holders, bank_accounts, banks, transfers, users
-select schemaname,tablename,rowsecurity from pg_tables where schemaname='paylink';
--- rowsecurity = true for all five
-```
+The private synthetic recording passwords live in `.local/recording-users.json` on the Mac. The ignored `.env.hosted` contains the restricted database connection and local hosted-mode session secret. Neither belongs in Git, a submission ZIP, screenshots, or video. Public local demo-password seeding remains blocked against hosted URLs.
 
-Populate the simulated bank catalog using `supabase/banks.sql`, then register Sai and Siddhardth through the UI with private passwords. Link accounts through the UI; each receives $1,000 in simulated funding. To demonstrate a joint account, use `supabase/joint-account.sql` after selecting the intended account explicitly. This avoids putting public demo passwords in a hosted database. The local `seed.py --demo` helper deliberately refuses hosted URLs.
+## Schema provisioning and future updates
 
-## 3. Deploy FastAPI on Render
+The three checked-in migrations were applied to the newly created dedicated hosted project through Supabase, including FK-compatible owner allocation locks. The restricted role and policies were provisioned separately without putting its password into migration source. The synthetic bank catalog came from supabase/banks.sql. Profiles and accounts were created through the actual public UI with private passwords, then joint ownership through Accounts.
 
-Create a Blueprint from the repository; `render.yaml` configures a Docker web service named `paylink-api`. Alternatively create the service manually with repository-root Docker context and `backend/Dockerfile`. The backend listens on Render's PORT and exposes `/api/health`.
+For a fresh dedicated project, select its real organization/region and obtain the dashboard's current connection details. Apply versioned schema migrations, provision the restricted role, and configure backend/frontend secrets. `scripts/migrate.py` supports an owner ADMIN_DATABASE_URL and dedicated DATABASE_URL, but this Mac deliberately does not hold the hosted owner's password. Use connected Supabase migration tools or securely provide an owner URL on a trusted setup machine. Never repoint seeded local fixture tests or query_evidence.py at hosted data.
 
-Set securely:
+For future code changes, push reviewed source to main and inspect Render/Vercel deployment status. Vercel Git integration auto-deploys this branch. Render was imported by public repository URL and did not deploy on the next push despite its autoDeploy flag; a manual deploy of the new revision was required. Verify a real deploy event and trigger manually when this import has no Git-provider webhook. A queued build is not success. Wait for Render live and Vercel READY, check the public `/api/health`, and rerun an appropriately scoped acceptance check. Keep the stable public origin when testing writes; unrelated preview/alias origins are not automatically trusted.
 
-- `DATABASE_URL`: dedicated Supabase role URL, certificate validation enabled.
-- `JWT_SECRET`: generated stable secret, shared by all backend instances.
-- `APP_ORIGIN`: the final Vercel HTTPS origin. Set it before testing writes.
-- `COOKIE_SECURE=true`.
+## Verified acceptance and remaining work
 
-Do not put ADMIN_DATABASE_URL on the long-running Render app. Do not run local Docker setup or synthetic plan benchmarks during cloud startup. The database must already be migrated. The backend dependencies are pinned, including the binary psycopg client. This project uses one worker; the teaching rate limiter is per-process. A free service may sleep and cold-start; choose a suitable plan before recording the video.
+`scripts/hosted_browser_test.py` runs actual public browser registration/sign-in, simulated account creation, immediate joint-owner grants, $12.34 transfers, read-only database delta assertions, same-key retries, changed-payload/authorization/insufficient-funds rejection, persistence, CSV, own-account movement, insights, and mobile layout. It retains private synthetic recording rows deliberately and reads its credentials from ignored local files. `scripts/hosted_evidence.py` independently records schema, role, TLS, current rows, and reconciliation without writes.
 
-## 4. Deploy Next.js on Vercel
+See validation.md, hosted-browser-results.json, hosted-database-evidence.json, hosted-advisors.json, and the actual Supabase screenshot. Security advisors returned no findings; informational unused indexes on the small dataset are not grounds to remove the history indexes without workload evidence.
 
-Import the same GitHub repository and set **Root Directory = frontend**, framework Next.js. `frontend/vercel.json` uses `npm ci` and `npm run build`.
-
-Set:
-
-- `BACKEND_URL=https://<actual-render-service-host>` (no trailing slash).
-- `NEXT_PUBLIC_DEMO_ENABLED=false`.
-
-BACKEND_URL is needed **at build time** because Next.js compiles the rewrites. After changing it, redeploy the frontend. The frontend proxies `/api/*` to Render, so browser cookies remain first-party and the database URL never enters the browser bundle. Do not put `DATABASE_URL`, ADMIN_DATABASE_URL, or a Supabase service key in any NEXT_PUBLIC variable.
-
-Set Render APP_ORIGIN to the actual stable Vercel production origin and redeploy Render as needed. Preview domains are intentionally not automatically trusted; use the stable production domain for the demonstration.
-
-## 5. Required live acceptance checks
-
-These are **pending** until a real deployment exists:
-
-1. Open the public Vercel site in Chromium and capture the sign-in and overview screens.
-2. Confirm the public `/api/health` response reports database connected. This establishes basic connectivity but is not sufficient alone.
-3. Register two synthetic users or sign in with privately provisioned demo users; link simulated accounts. Confirm inserts in the Supabase SQL Editor.
-4. Send $12.34 from Sai to Siddhardth. Query the exact transfer ID and both balances in Supabase. Confirm one debit, one credit, and one transfer row.
-5. Reload both sessions; show the sender debit and recipient receipt. Submit the same idempotency key twice through an authenticated request and confirm only one transfer row.
-6. Try insufficient funds and a non-owned source; confirm rejection and unchanged balances.
-7. Run the read-only reconciliation query from queries.sql: zero discrepant rows.
-8. Capture a real Supabase table/SQL-result screenshot alongside the live app screenshots. Hide connection strings, auth headers, passwords, and session tokens.
-9. Record the tested public URL, project reference, deployment version, time, and screenshots in validation.md. Only then mark hosted deployment complete.
-
-Do not point the seeded local pytest/browser scripts at a hosted project: they assume published local credentials and administer fixtures. Adapt them to isolated hosted test identities before running remotely. Generalize the read-only and transfer assertions without borrowing real user data.
+Render's free service can sleep. Warm the public app and API health, then sign in before recording. Backup/restore, crash recovery, sustained hosted load, a distributed limiter, invitation acceptance/revocation, and an immutable ledger remain future work. No real banks or funds are connected.

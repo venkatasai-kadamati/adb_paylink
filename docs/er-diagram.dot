@@ -1,5 +1,6 @@
 digraph PayLink {
 graph [rankdir=LR, bgcolor="#FFFFFF", pad="0.4", nodesep="0.7", ranksep="1.3", fontname="Helvetica"];
+label="PayLink logical ER model | Five base relations | USD simulation\n* Minimum one holder is enforced by account-opening workflows, not SQL FKs."; labelloc=b; fontsize=12;
 node [shape=plain,fontname="Helvetica"];
 edge [color="#8DA6CA",fontname="Helvetica",fontsize=10,arrowsize=.7];
 users [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#F7F9FC"><TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>USERS</B></TD></TR><TR><TD ALIGN="LEFT">id : uuid [PK]</TD></TR><TR><TD ALIGN="LEFT">username : text [UNIQUE]</TD></TR><TR><TD ALIGN="LEFT">email : text [UNIQUE]</TD></TR><TR><TD ALIGN="LEFT">phone : text [UNIQUE, nullable]</TD></TR><TR><TD ALIGN="LEFT">full_name : text</TD></TR><TR><TD ALIGN="LEFT">password_hash : text (Argon2id)</TD></TR><TR><TD ALIGN="LEFT">created_at : timestamptz</TD></TR></TABLE>>];

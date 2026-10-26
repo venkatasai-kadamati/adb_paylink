@@ -6,12 +6,17 @@
     "Reload persistence, activity search, details, and real CSV download",
     "Own-account transfer through UI",
     "Simulated account creation persisted with exactly $1,000 funding",
+    "Joint owner added through UI; one account and two ownership rows",
     "Second signed-in user sees received transfer and shared account",
+    "New joint owner can spend the shared balance through UI",
+    "SQL-driven insights render after transfers",
     "390px mobile layout, navigation, and no page overflow",
     "Registration and new-user empty state",
     "No browser JavaScript errors"
   ],
   "javascript_errors": [],
-  "database": "local PostgreSQL 15, not hosted Supabase",
+  "database": "local PostgreSQL 16, not hosted Supabase",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "timestamp_utc": "2026-10-26T03:30:47.341441+00:00",
   "test_data_cleaned": true
 }

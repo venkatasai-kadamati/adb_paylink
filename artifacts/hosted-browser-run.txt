@@ -1,0 +1,9 @@
+PASS: Public registration/sign-in with private passwords; published local demo login disabled
+PASS: Simulated account creation persisted in Supabase
+PASS: Joint ownership created in public UI and visible in the second isolated session
+PASS: Public UI transfer committed exactly once: sender -1234, recipient +1234 cents in Supabase
+PASS: Hosted identical retries return one ID; changed payload, non-owner and insufficient funds rejected without balance changes
+PASS: Reloaded history, exact transfer details, real CSV download and recipient receipt verified
+PASS: Second owner spends shared funds through the own-account transfer UI
+PASS: Hosted insights and 390px mobile layout render without overflow
+PASS: Hosted reconciliation: zero discrepancies; no browser JavaScript errors

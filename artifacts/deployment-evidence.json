@@ -1,0 +1,32 @@
+{
+  "observed_at_chicago": "2026-10-25",
+  "public_url": "https://paylink-radiant690s-projects.vercel.app",
+  "api_url": "https://paylink-api-xgfo.onrender.com",
+  "supabase_project_ref": "wktoypofpksgbjwtadrn",
+  "render": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"commit\":{\"createdAt\":\"2026-10-26T03:45:23Z\",\"id\":\"e541eb6e180c1b6445aee210a1ff34277f91649d\",\"message\":\"Initialize pooled database sessions explicitly for Chicago calendar insights\"},\"createdAt\":\"2026-10-26T03:45:37.948445Z\",\"finishedAt\":\"2026-10-26T03:46:04.401189Z\",\"id\":\"dep-dbfcpoavcj2c73fl8gfg\",\"startedAt\":\"2026-10-26T03:45:37.921058Z\",\"status\":\"live\",\"trigger\":\"api\",\"updatedAt\":\"2026-10-26T03:46:37.750168Z\"}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "vercel": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"result\": {\n    \"deployments\": {\n      \"pagination\": {\n        \"count\": 1,\n        \"next\": 1792986482244,\n        \"prev\": 1792986482244\n      },\n      \"deployments\": [\n        {\n          \"id\": \"dpl_GPtkUBcbTvjAfvDJB4gAsNeREGYk\",\n          \"name\": \"paylink\",\n          \"url\": \"paylink-33kurqjdt-radiant690s-projects.vercel.app\",\n          \"created\": 1792986482244,\n          \"state\": \"READY\",\n          \"target\": \"production\",\n          \"creator\": {\n            \"uid\": \"7bjnX6lYE3tedMdKCdJggtCM\",\n            \"username\": \"radiant690\"\n          },\n          \"meta\": {\n            \"githubCommitRef\": \"main\",\n            \"githubCommitSha\": \"daeb73077e350ce22b7137cf6d5f056b39c530dd\",\n            \"githubCommitMessage\": \"Keep owner allocation locks compatible with transfer foreign key checks\",\n            \"githubRepo\": \"adb_paylink\",\n            \"githubOrg\": \"venkatasai-kadamati\"\n          },\n          \"inspectorUrl\": \"https://vercel.com/radiant690s-projects/paylink/GPtkUBcbTvjAfvDJB4gAsNeREGYk\",\n          \"isRollbackCandidate\": true\n        }\n      ]\n    }\n  }\n}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "notes": [
+    "Render runs application code e541eb6; daeb730 contains a database migration applied separately on Supabase and its regression test.",
+    "Source documentation/evidence commits can be newer than application deployment; inspect their scope.",
+    "Public browser acceptance is supplemented by the final calendar and FK-lock checks.",
+    "No monitoring drains or recovery drill configured; free Render service may sleep."
+  ]
+}

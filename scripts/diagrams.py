@@ -23,7 +23,7 @@ for i,(source,target,label) in enumerate(edges):
 cell=SubElement(root,'mxCell',id='note',value='PayLink · CS 5600 · Logical ER model\nUSD only · Five base relations\n* At least one holder is guaranteed by open_account; no deferred SQL assertion.\nSolid relationships are FKs. Source ownership is checked by the transfer function.',style='text;whiteSpace=wrap;html=0;align=left;fontSize=13;fontColor=#617A92;',vertex='1',parent='1')
 SubElement(cell,'mxGeometry',x='40',y='770',width='1130',height='100',attrib={'as':'geometry'})
 ElementTree(file).write(ROOT/'docs/er-diagram.drawio',encoding='utf-8',xml_declaration=True)
-lines=['digraph PayLink {','graph [rankdir=LR, bgcolor="#FFFFFF", pad="0.4", nodesep="0.7", ranksep="1.3", fontname="Helvetica"];','node [shape=plain,fontname="Helvetica"];','edge [color="#8DA6CA",fontname="Helvetica",fontsize=10,arrowsize=.7];']
+lines=['digraph PayLink {','graph [rankdir=LR, bgcolor="#FFFFFF", pad="0.4", nodesep="0.7", ranksep="1.3", fontname="Helvetica"];','label="PayLink logical ER model | Five base relations | USD simulation\\n* Minimum one holder is enforced by account-opening workflows, not SQL FKs."; labelloc=b; fontsize=12;', 'node [shape=plain,fontname="Helvetica"];','edge [color="#8DA6CA",fontname="Helvetica",fontsize=10,arrowsize=.7];']
 for name,(_,_,attrs) in tables.items():
  rows='<TR><TD ALIGN="LEFT" BGCOLOR="#EAF0FC"><B>'+name.upper()+'</B></TD></TR>'
  rows+=''.join('<TR><TD ALIGN="LEFT">'+html.escape(a)+'</TD></TR>' for a in attrs)

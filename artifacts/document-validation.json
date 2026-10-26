@@ -1,0 +1,25 @@
+{
+  "markdown_sources": [
+    "docs/midterm-report.md",
+    "docs/submission_guide.md",
+    "docs/database-design.md"
+  ],
+  "pdf_generated_from_final_docx": true,
+  "rendered_with": "Codex bundled LibreOffice and render_docx.py",
+  "pages": {
+    "midterm-report": 7,
+    "submission_guide": 5,
+    "database-design": 5
+  },
+  "all_pages_visually_reviewed": true,
+  "editable_er_xml_validated": {
+    "entities": 5,
+    "foreign_key_connectors": 6
+  },
+  "exports": [
+    "HTML",
+    "DOCX",
+    "PDF"
+  ],
+  "no_clipping_or_overlap_observed": true
+}

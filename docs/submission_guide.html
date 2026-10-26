@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
+  <meta name="generator" content="pandoc 3.12.1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>submission_guide</title>
+  <meta name="author" content="Sai Kadamati and Siddhardth" />
+  <title>PayLink Midterm Submission and Recording Guide</title>
   <style>
-code{white-space: pre-wrap;}
+
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
 ul.task-list[class]{list-style: none;}
@@ -19,309 +24,296 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
   <style type="text/css">@page{size:A4;margin:18mm 17mm 20mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#203545;font-size:10.5pt;line-height:1.55;max-width:900px;margin:0 auto}h1,h2,h3{font-weight:600;line-height:1.25;page-break-after:avoid;color:#1b3856}h1{font-size:19pt;letter-spacing:-.4px;margin:30px 0 13px;border-bottom:1px solid #dbe5f2;padding-bottom:8px}h2{font-size:14pt;margin:24px 0 10px}h3{font-size:11.5pt;margin:18px 0 8px}p{margin:9px 0 13px}a{color:#245ade;overflow-wrap:anywhere}strong{font-weight:600}header#title-block-header{padding:22px 0 28px;border-bottom:3px solid #245ade;margin-bottom:28px}header h1.title{font-size:29pt;letter-spacing:-1px;line-height:1.12;border:0;margin:0 0 18px;padding:0}header .subtitle{font-size:12pt;color:#68819b}header .author{font-size:11pt;color:#7f8e9c}table{border-collapse:collapse;width:100%;font-size:8.3pt;margin:16px 0 22px;table-layout:auto}th{background:#edf2fb;color:#36577d;text-align:left;font-size:8.5pt}th,td{border:1px solid #dfe7ef;padding:8px;vertical-align:top;overflow-wrap:anywhere}tr{page-break-inside:avoid}thead{display:table-header-group}code{font-size:.88em;font-family:monospace;background:#f1f4f8;padding:1px 3px;border-radius:3px;overflow-wrap:anywhere}pre{background:#f4f7fb;padding:14px;border-left:3px solid #8ba8dc;white-space:pre-wrap;font-size:9pt;line-height:1.5}pre code{background:transparent;padding:0}img{max-width:100%;height:auto}figure{margin:20px 0;page-break-inside:avoid}figcaption{font-size:8pt;color:#8495a6;margin-top:8px}li{margin:5px 0}blockquote{border-left:3px solid #9db6de;padding-left:18px;color:#64829d;margin-left:0}hr{border:0;border-top:1px solid #e1e8f1;margin:25px 0}
 </style>
 </head>
 <body>
-<h1 id="paylink-midterm-submission-and-internal-knowledge-transfer-guide">PayLink
-— midterm submission and internal knowledge-transfer guide</h1>
-<h2 id="what-to-submit">What to submit</h2>
-<p>The supplied assignment text requests <strong>one video per
-team</strong>, narrated by one representative explaining progress and
-each teammate’s contributions. Only one team submission is needed. The
-materials do not specify an exact video duration or written-report
-length. Suggested internal format: a <strong>7–9 minute video</strong>,
-supported by the report, editable ER model, SQL, and validation
-evidence. This is a recommendation, not an invented course
-requirement.</p>
-<p>The current artifact package contains the application source,
-backend, database migrations, synthetic local seed, ER diagram sources,
-normalization/design analysis, report, browser screenshots, tests, SQL
-exercises, and deployment instructions. <strong>The live public website
-and hosted Supabase verification are still pending account/tool
-access.</strong> Do not record a hosted-success claim until the
-deployment acceptance checklist passes.</p>
-<h2 id="contribution-split-assigned-responsibility-pending-team-confirmation">Contribution
-split: assigned responsibility, pending team confirmation</h2>
-<p>The implementation was produced with Codex assistance in this
-session. The following is a balanced <strong>recommended ownership
-split</strong> for review, explanation, follow-up changes, and the
-video. It is not a fabricated historical record of authorship. Each
-teammate should run the work, explain the design, make/record their
-actual contributions, and update the final attribution.</p>
+<header id="title-block-header">
+<h1 class="title">PayLink Midterm Submission and Recording Guide</h1>
+<p class="author">Sai Kadamati and Siddhardth</p>
+</header>
+<h1 id="recording-readiness">Recording readiness</h1>
+<p>The public app is live at <a href="https://paylink-radiant690s-projects.vercel.app" class="uri">https://paylink-radiant690s-projects.vercel.app</a>. Its
+path is Next.js on Vercel, FastAPI on Render, and the private five-table
+PostgreSQL schema on Supabase in primary-org/paylink. Nine hosted
+browser acceptance groups passed on this Mac, including actual committed
+transfers and zero balance reconciliation differences. The Mac also
+passed 25 database/API tests and 12 local browser workflow groups. See
+validation.md for evidence and boundaries.</p>
+<p>One representative records one video for the team; one representative
+submits it. The script below is designed for about eight minutes. This
+duration is a practical suggestion, not a claim about an
+instructor-imposed limit. Keep the public app and the actual Supabase
+project visible during the database demo. No real money or bank
+integrations are involved.</p>
+<p>Private synthetic profile passwords are stored only in the ignored
+<code>.local/recording-users.json</code> on the setup Mac. Open that
+file privately to sign in as <code>sai</code> and
+<code>siddhardth</code>. Do not put it in the submission, show it on
+video, or use the public local-only demo password on the hosted app. Use
+a normal Chrome window for Sai and an Incognito window for Siddhardth so
+their cookies stay separate.</p>
+<h1 id="submission-package">Submission package</h1>
+<p>Submit the video and the deliverables requested by the instructor:
+application source, the midterm report, database design analysis,
+editable ER model, and supporting SQL/evidence. The Markdown sources
+have corresponding PDF, Word, and HTML exports under docs/. The native
+editable ER source is er-diagram.drawio; er-diagram.mmd and
+er-diagram.dot are alternate editable sources. A PNG alone is not an
+editable model.</p>
+<p>The source repository is <a href="https://github.com/venkatasai-kadamati/adb_paylink" class="uri">https://github.com/venkatasai-kadamati/adb_paylink</a> on
+main. Validation artifacts distinguish local test fixtures, which were
+cleaned up, from hosted synthetic recording rows, which remain
+available. Backup/restore, crash recovery, and production-scale load
+testing have not been demonstrated.</p>
+<h1 id="proposed-contribution-split">Proposed contribution split</h1>
+<p>Codex generated and revised the implementation and supporting
+materials. This table proposes responsibility for review, explanation,
+follow-up work, and presentation. It does not assign historical
+authorship. Each teammate should replace proposed ownership with a
+truthful statement of their actual work before submitting.</p>
 <table>
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Area</th>
-<th>Sai — proposed responsibility</th>
-<th>Siddhardth — proposed responsibility</th>
-<th>Evidence to prepare</th>
+<th>Sai proposed review responsibility</th>
+<th>Siddhardth proposed review responsibility</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Requirements and modeling</td>
-<td>Financial rules, FDs/candidate keys, account/transfer
-constraints</td>
-<td>ER diagram, cardinalities, joint ownership, relational
-translation</td>
-<td>Explain keys, bridge table, and source/destination roles
-together.</td>
+<td>Financial invariants, candidate keys, functional dependencies</td>
+<td>ER cardinalities, ownership bridge, relational mapping</td>
 </tr>
-<tr class="even">
-<td>Database implementation</td>
-<td>Five-table DDL, restricted role, transfer locks/idempotency,
-migrations</td>
-<td>Seed/catalog review, dictionary, advanced SQL
-joins/aggregation/window examples</td>
-<td>Run migrations and queries; show the schema and no duplicated bank
-facts.</td>
+<tr>
+<td>Database</td>
+<td>DDL, constraints, transfer locks, idempotency, restricted role</td>
+<td>Dictionary, synthetic catalog, joins, aggregates, running
+balances</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Application</td>
-<td>FastAPI routes, Argon2id/session identity, DB calls,
-exception/rollback handling</td>
-<td>Next.js/TypeScript views, responsive styling,
-account/recipient/transfer flows, CSV and insights</td>
-<td>Demonstrate identity-to-ownership validation and UI-to-DB data
-flow.</td>
+<td>FastAPI identity, parameterized SQL, error and rollback paths</td>
+<td>Next.js flows, joint ownership, history, CSV, insights, mobile
+layout</td>
 </tr>
-<tr class="even">
-<td>Validation and delivery</td>
-<td>Concurrency/integrity tests, reconciliation, index/EXPLAIN
-investigation</td>
-<td>Browser E2E, visual/mobile checks, screenshots, report/video,
-deployment configuration</td>
-<td>Review test outputs; capture the public app and actual Supabase
-results after access works.</td>
+<tr>
+<td>Verification and delivery</td>
+<td>Integrity/concurrency tests, reconciliation, EXPLAIN</td>
+<td>Browser evidence, screenshots, report, video, hosted acceptance</td>
 </tr>
 </tbody>
 </table>
-<p>Suggested speaking balance if one representative records: name both
-teammates at the start, then explicitly credit each assigned/confirmed
-area. If Sai narrates, use “Siddhardth owns…” only after he confirms it;
-if Siddhardth narrates, mirror the wording for Sai. Replace proposed
-assignments with actual verified work before submission.</p>
-<h2 id="four-incremental-milestones">Four incremental milestones</h2>
+<p>Safe narration: “Sai’s proposed review focus is the transaction and
+backend layer; Siddhardth’s is the interface and relationship
+documentation. We will attribute individual contributions only after
+each teammate confirms the work they performed.” If actual review and
+changes are confirmed, name the concrete work and evidence instead. Do
+not say either teammate independently implemented the generated
+code.</p>
+<h1 id="four-incremental-milestones">Four incremental milestones</h1>
 <ol type="1">
-<li><strong>Domain and design.</strong> Agree on simulation scope, five
-entities, many-to-many joint ownership, candidate keys, and an editable
-ER diagram. Deliverables: proposal alignment, relationship model,
-FD/normalization notes. Exit criterion: both teammates can justify why
-ownership is a separate relation.</li>
-<li><strong>Reliable data layer.</strong> Implement versioned DDL,
-keys/constraints, synthetic sample data, account opening, and the
-transfer function. Deliverables: recreation scripts, dictionary,
-advanced SQL examples. Exit criterion: clean migration, correct
-FK/uniqueness rules, and reconciliation with no differences.</li>
-<li><strong>End-to-end application.</strong> Integrate FastAPI
-authentication and database access with Next.js accounts, recipient
-lookup, transfer review, history, CSV, and insights. Exit criterion: a
-signed-in user can transfer and both parties see the persisted
-result.</li>
-<li><strong>Validation and midterm demonstration.</strong> Run
-integrity/concurrency/rollback tests, examine index plans, capture
-desktop/mobile evidence, and assemble the report/video. Local checks
-have been performed. <strong>The required public deployment and hosted
-Supabase acceptance portion is pending</strong>; do not mark the entire
-milestone complete until the live site and DB are verified.</li>
+<li><strong>Domain and design.</strong> Define the simulation, five
+entities, one-to-many bank/account relationship, many-to-many ownership,
+candidate keys, and normalization assumptions. Evidence: editable ER
+diagram and database-design analysis. The first increment explains the
+model before implementation.</li>
+<li><strong>Reliable database layer.</strong> Add versioned migrations,
+PK/FK/UNIQUE/CHECK constraints, synthetic bank catalog, atomic account
+opening, joint-owner grants, and the transfer function. Evidence:
+runnable SQL, limited backend role, and reconciliation. This builds a
+database that can enforce its supported invariants.</li>
+<li><strong>End to end application.</strong> Connect FastAPI sessions to
+Next.js registration, accounts, exact recipient lookup, transfer review
+and confirmation, own-account movement, history, CSV, and insights.
+Evidence: real user interactions and persisted database rows.</li>
+<li><strong>Validation and midterm delivery.</strong> Run tests on this
+Mac, inspect live screenshots, compare query plans, publish the
+Vercel/Render/Supabase path, and assemble reports and recording
+materials. Evidence: 25 database/API tests, 12 local browser groups,
+nine hosted browser groups, and zero reconciliation discrepancies. The
+proposed individual review assignments still require team
+confirmation.</li>
 </ol>
-<h2 id="follow-on-milestones-5-6-and-7">Follow-on milestones 5, 6, and
-7</h2>
+<h1 id="future-milestones-5-through-7">Future milestones 5 through
+7</h1>
 <ul>
-<li><strong>5 — Hosted completion and operations:</strong> connect
-Supabase primary-org/paylink, deploy, run isolated hosted acceptance,
-capture UI plus Supabase evidence, and test a backup/restore procedure.
-Resolving the existing deployment blocker is the first task; it is not
-optional future polish.</li>
-<li><strong>6 — Model and security extensions:</strong> immutable
-double-entry ledger/audit model, reversals, pagination, joint-owner
-invitations/revocations, stronger identity lifecycle, and explicit
-revised invariants.</li>
-<li><strong>7 — Performance and final evaluation:</strong>
-representative load, workload skew, repeatable query-plan comparisons,
-multi-worker validation, accessibility refinement, and final course
-presentation.</li>
-</ul>
-<h2 id="video-script-and-screen-cues-approximately-8-minutes">Video
-script and screen cues (approximately 8 minutes)</h2>
-<p>Use this as a rehearsal script; shorten or adapt to the instructor’s
-actual requirements. Bracketed text is an instruction to the presenter,
-not spoken content. Do not read unverified authorship or deployment
-claims.</p>
-<h3 id="introduction">0:00–0:25 — Introduction</h3>
-<p>“Hello, this is our midterm progress update for CS 5600 Advanced
-Database Systems. I’m [presenter’s name], and I’ll walk through our
-project, its database design, our implementation progress, and the next
-milestones.”</p>
-<p>[Show the title slide or report cover.]</p>
-<h3 id="teammate-introductions-and-project-title">0:25–0:50 — Teammate
-introductions and project title</h3>
-<p>“Our team is Sai Kadamati and Siddhardth. The project is
-<strong>PayLink: Simulated Peer-to-Peer Banking Transfers</strong>.
-Sai’s assigned focus is the database transaction and backend layer.
-Siddhardth’s assigned focus is the interface, relationship
-documentation, and browser demonstration. We share design review and
-validation.”</p>
-<p>[Replace “assigned focus” with actual confirmed contributions if the
-team has completed and documented them. Include the AI-assistance
-acknowledgment required by the course.]</p>
-<h3 id="project-description">0:50–1:25 — Project description</h3>
-<p>“PayLink lets a user open simulated accounts, find a recipient by
-username, email, or phone, send money, move money between owned
-accounts, and review activity. It also supports joint accounts. No real
-bank credentials or real funds are involved. The database problem is
-keeping both balances and the transfer record correct when requests
-overlap, fail, or are retried.”</p>
-<p>[Show the overview, then point out the simulation label and shared
-account.]</p>
-<h3 id="four-milestones">1:25–2:20 — Four milestones</h3>
-<p>“Our first milestone defined the domain and ER model. The second
-implemented the relational schema, constraints, sample data, and
-transaction rules. The third connected a FastAPI backend to a Next.js
-interface. The fourth covers tests, query plans, screenshots, and the
-midterm demonstration. We have local implementation evidence for these
-stages. Hosted Supabase and the public website are [pending / verified
-as shown next].”</p>
-<p>[Choose the truthful status. Show the milestone table. Explain Sai’s
-and Siddhardth’s confirmed work rather than merely displaying
-names.]</p>
-<h3 id="major-database-design-and-normalization">2:20–3:30 — Major
-database design and normalization</h3>
-<p>“There are five core tables: Users, Banks, BankAccounts,
-AccountHolders, and Transfers. Banks to Accounts is one-to-many. Users
-to Accounts is many-to-many, so AccountHolders uses a composite
-user/account key. This lets two users share one account balance without
-copying the account.</p>
-<p>“We separated user, bank, account, ownership, and transfer facts to
-remove partial and transitive dependencies. For example, an account
-determines its bank ID, while the bank ID determines bank details.
-Storing a bank name on every account would repeat those facts. In the
-final relations, each declared nontrivial functional dependency starts
-from a candidate key, giving BCNF under our assumptions. Ownership and
-sufficient funds are transaction rules, not something normalization
-alone guarantees.”</p>
-<p>[Open the editable diagram, point to the bridge and the two account
-roles on Transfers, then show the FD table.]</p>
-<h3 id="atomicity-concurrency-and-duplicate-prevention">3:30–4:35 —
-Atomicity, concurrency, and duplicate prevention</h3>
-<p>“A transfer checks the signed-in actor’s source ownership and locks
-both account rows in a consistent UUID order. It checks active state and
-funds before debiting one account, crediting the other, and inserting
-the event within one transaction. If any step fails, the whole
-transaction rolls back.</p>
-<p>“A user-scoped idempotency key prevents a retry from sending the same
-payment twice. An identical retry returns the original transfer; a
-changed payload with the same key is rejected. Our tests also check
-competing spends, opposing transfers, joint owners, and direct
-balance-update permissions.”</p>
-<p>[Show the transfer function excerpt and current test result. Explain
-READ COMMITTED plus row locks; do not claim arbitrary serializable
-behavior.]</p>
-<h3 id="sql-and-query-processing">4:35–5:10 — SQL and query
-processing</h3>
-<p>“We use joins and aggregation for account totals and shared
-ownership, a window function for running balances, and a reconciliation
-query comparing stored balances against opening balances and transfer
-deltas. The local reconciliation found zero differences. A 20,000-row
-temporary microbenchmark compared account history with and without the
-composite index: the indexed plan avoided scanning and sorting the full
-fixture. These local timings are illustrative, not a production
-performance promise.”</p>
-<p>[Show the query and actual EXPLAIN output. The fixture and index drop
-were rolled back.]</p>
-<h3 id="basic-ui-and-database-demo">5:10–6:45 — Basic UI and database
-demo</h3>
-<p>[For the final requested video, use the <strong>actual public
-website</strong> and the <strong>actual Supabase project</strong> after
-deployment. Until then, local rehearsal is only a rehearsal.]</p>
-<p>“I’ll sign in as Sai. Here are the simulated accounts, including one
-jointly held account. I’ll send $12.34 to Siddhardth. The review screen
-shows the source, destination, amount, and remaining balance. After
-confirmation, the receipt gives us a transfer ID.</p>
-<p>“Now we can use that exact ID to inspect the row in Supabase. We
-should see one transfer, a source balance lower by 1,234 cents, and the
-destination higher by the same amount. Reloading the app preserves the
-payment. In Siddhardth’s session, it appears as received. An
-insufficient-funds request is rejected and leaves the balances
-unchanged.”</p>
-<p>[Have the source and destination balances recorded
-<strong>before</strong> sending. Show only the relevant rows and no
-credentials. Run the read-only reconciliation query; zero rows means no
-discrepancies. Show the mobile screenshot briefly if time permits.]</p>
-<h3 id="contributions-and-progress-recap">6:45–7:30 — Contributions and
-progress recap</h3>
-<p>“[Sai’s confirmed work and evidence]. [Siddhardth’s confirmed work
-and evidence]. The integration tests and browser checks cover the
-important correctness paths. [State hosted completion or the remaining
-deployment blocker accurately].”</p>
-<p>[Each teammate should supply one concrete example they can explain: a
-locking decision for Sai, and a UI-to-database/browser assertion or
-relationship/query decision for Siddhardth.]</p>
-<h3 id="whats-next-milestones-57">7:30–8:10 — What’s next: milestones
-5–7</h3>
-<p>“Milestone five completes hosted acceptance and operational checks,
-including live Supabase evidence and a recovery exercise. Milestone six
-extends the account and audit model with reversals, owner management,
-and a stronger ledger. Milestone seven focuses on representative
-performance tests, query optimization, accessibility, and the final
-evaluation. Thank you.”</p>
-<p>[If hosted acceptance is already finished, say that this part of
-milestone five is complete and identify the next operational
-checks.]</p>
-<h2 id="recording-checklist">Recording checklist</h2>
-<ul>
-<li>One teammate records and one representative submits one video for
-the team.</li>
-<li>Confirm the instructor permits this AI assistance and include an
-accurate disclosure.</li>
-<li>Review the report and edit contribution assignments to actual
+<li><strong>5 Hosted operations and recovery.</strong> Extend completed
+hosted acceptance with sustained hosted concurrency, monitoring, a
+backup/restore drill, and checks after redeploy and free-service wakeup.
+The hosted schema and basic public transfer path already work.</li>
+<li><strong>6 Account and audit model.</strong> Add invitation
+acceptance and coordinated owner revocation, pagination, reversals, and
+an evaluated immutable double-entry ledger. Immediate equal-owner grants
+are implemented; invitation/revocation and a ledger are future
 work.</li>
-<li>Use the stable public deployment; avoid recording free-tier
-cold-start delays.</li>
-<li>Use only synthetic data and avoid displaying cookies, password
-fields, connection strings, or secret panels.</li>
-<li>Keep two signed-in sessions available, one for each user; shared
-cookies in one browser profile will replace the prior session.</li>
-<li>Record balances before/after a transfer; show the exact transfer ID
-in Supabase and the app.</li>
-<li>Rehearse the insufficient-funds rejection and idempotency
-explanation.</li>
-<li>Confirm audio, readable zoom, and the instructor’s accepted video
-format/upload destination.</li>
-<li>Keep the editable diagram and source report as supporting materials;
-submit extra files only if requested by the assignment.</li>
+<li><strong>7 Scale and final evaluation.</strong> Test representative
+load and skew, repeat query-plan measurements, validate multi-worker
+security and limiting, refine accessibility, and prepare the final
+course evaluation with measured evidence.</li>
 </ul>
-<h2 id="knowledge-transfer-questions-for-both-teammates">Knowledge-transfer
-questions for both teammates</h2>
-<ol type="1">
-<li>Why is <code>user_id</code> not a column on BankAccounts? What
-anomaly would that cause for a joint account?</li>
-<li>Why are money values cents rather than floating point?</li>
-<li>What is the difference between a PK, alternate key, FK, and the
-idempotency key pair?</li>
-<li>Which rules come from SQL constraints and which require the
-transaction function?</li>
-<li>What happens if two payments try to spend the same balance? Why lock
-both rows in one order?</li>
-<li>Why does nullable phone uniqueness not make it an unconditional
-candidate key?</li>
-<li>What does the running-balance query prove, and what does zero-row
-reconciliation mean?</li>
-<li>Why can the browser not receive <code>paylink_api</code>
-credentials? What does SECURITY DEFINER change?</li>
-<li>Which claims are locally tested and which require live Supabase
-validation?</li>
-<li>What did each teammate actually contribute, and which parts were
-generated with assistance?</li>
-</ol>
+<h1 id="video-script-and-screen-cues">Video script and screen cues</h1>
+<p>The script assumes Sai narrates the whole video. If Siddhardth
+records, replace only the introduction name and any confirmed
+personal-contribution statements. The remaining script is ready to
+rehearse; adapt only confirmed personal-contribution statements. Screen
+directions are not spoken.</p>
+<h2 id="minutes-to-1-minute-introduction-and-project">0 minutes to 1
+minute Introduction and project</h2>
+<p>“Hello, I’m Sai Kadamati, presenting our CS 5600 Advanced Database
+Systems midterm update. Our teammates are Sai Kadamati and Siddhardth.
+Our project is PayLink, Simulated Peer-to-Peer Banking Transfers.</p>
+<p>“PayLink lets registered users create simulated checking and savings
+accounts, share an account with another registered user, find
+recipients, send funds, move funds between their own accounts, and
+inspect history and insights. It never connects to real banks or moves
+real money. The main database challenge is preserving both balances and
+the transfer record when requests overlap, fail, or repeat.”</p>
+<p>Show the report title, then the public app’s simulation label and
+account overview.</p>
+<h2 id="minute-to-2-minutes-four-milestones-and-team-responsibilities">1
+minute to 2 minutes Four milestones and team responsibilities</h2>
+<p>“Our first milestone defined the domain, ER model, keys, and
+normalization assumptions. The second built the five-table schema,
+constraints, account functions, and atomic transfer function. The third
+connected those rules to FastAPI authentication and the Next.js
+interface. The fourth tested the complete system on this Mac, published
+it with Supabase, and prepared the midterm evidence.</p>
+<p>“Sai’s proposed review focus is the database transaction and backend
+layer. Siddhardth’s proposed focus is the interface, relationship
+documentation, and browser demonstration. These are review assignments,
+not a claim of independent implementation. Codex assisted with code,
+design documents, tests, deployments, and recording materials. We will
+report each teammate’s actual contributions accurately.”</p>
+<p>Show the four milestones and contribution table. If both teammates
+have confirmed actual work, replace the proposed-focus sentences with
+those facts. Keep the AI disclosure accurate.</p>
+<h2 id="minutes-to-3-minutes-relational-design-and-normalization">2
+minutes to 3 minutes Relational design and normalization</h2>
+<p>“There are five core tables: Users, Banks, BankAccounts,
+AccountHolders, and Transfers. A bank maintains many accounts. Users and
+accounts have a many-to-many relationship, represented by AccountHolders
+with a composite user and account key. Two joint owners therefore refer
+to the same account and balance.</p>
+<p>“Transfers has separate source and destination account foreign keys,
+plus an initiating user. Account numbers are unique within a bank. A
+transfer’s idempotency key is unique within its initiating user.</p>
+<p>“We separated user, bank, account, ownership, and event facts to
+remove partial and transitive dependencies. For example, account ID
+determines bank ID, and bank ID determines bank details. Under the
+stated dependencies, each nontrivial determinant in a final relation is
+a superkey, giving BCNF. Ownership permission and sufficient funds
+remain transaction rules; normalization alone does not enforce
+them.”</p>
+<p>Open the editable diagram in diagrams.net. Point to the bridge,
+composite key, and the two account roles. If time is short, show the
+exported diagram and identify the editable source.</p>
+<h2 id="minutes-to-4-minutes-transactions-and-database-implementation">3
+minutes to 4 minutes Transactions and database implementation</h2>
+<p>“Money is stored as integer USD cents. The backend derives the actor
+from a verified signed session cookie. It checks source ownership, locks
+both accounts in UUID order, checks active state and funds, debits one
+account, credits the other, and inserts one completed event in a single
+transaction. Success is returned after commit; failure rolls back the
+whole operation.</p>
+<p>“READ COMMITTED plus those row locks serializes conflicting balance
+changes for this workflow. Consistent account ordering prevents the
+classic opposing-transfer deadlock. An actor-scoped advisory lock and
+unique idempotency constraint serialize retries: identical details
+return the original transfer, while changed details with the same key
+are rejected.</p>
+<p>“The backend database role cannot directly update balances or insert
+transfers. Controlled functions are in a private schema with fixed
+search paths and no PUBLIC execution. Joint-owner grants lock the target
+user before the account and enforce the same four-account limit as
+account creation.”</p>
+<p>Show the relevant SQL function and the current 25-test Mac result.
+Explain one rollback or concurrency test that the narrator can actually
+describe.</p>
+<h2 id="minutes-to-6-minutes-public-ui-and-database-demo">4 minutes to 6
+minutes Public UI and database demo</h2>
+<p>“I’m signed in as Sai on our public Vercel site. The API runs on
+Render and the data is stored in Supabase. These are synthetic accounts;
+creating one allocates one thousand simulated dollars. Shared expenses
+has two owners but one balance.</p>
+<p>“I’ll send twelve dollars and thirty-four cents to Siddhardth.
+Recipient lookup uses an exact username, email, or phone. The review
+shows the source, destination, amount, and remaining balance. Confirming
+gives us a transfer ID.</p>
+<p>“Using that exact ID in Supabase, we can see one transfer row. The
+sender is lower by one thousand two hundred thirty-four cents and the
+recipient is higher by the same amount. Reloading preserves the receipt.
+In Siddhardth’s separate session, it appears as received. I can also
+move funds from an account he jointly owns.</p>
+<p>“An insufficient-funds attempt is rejected. Our automated hosted
+check additionally retried the same idempotency key and confirmed one
+payment, and rejected a non-owner source and changed payload without
+further balance changes.”</p>
+<p>Before sending, record both actual balances. Afterward, copy the new
+transfer ID. In the Supabase SQL editor use docs/recording-demo.sql,
+replacing the example ID with the new receipt ID. Show the event and
+both accounts; do not read a prepared before/after number if you sent an
+additional payment. Show history, CSV download, and Insights briefly.
+Avoid password fields, connection strings, role credentials, and cookies
+on screen.</p>
+<h2 id="minutes-to-7-minutes-sql-evidence-and-validation">6 minutes to 7
+minutes SQL evidence and validation</h2>
+<p>“We use joins for bank and ownership details, aggregation for account
+and insight totals, a window function for running balances, and a
+reconciliation query that compares stored balances with opening balances
+plus incoming minus outgoing transfers. The hosted reconciliation
+returns zero differences.</p>
+<p>“On this Mac, twenty-five database and API tests passed, including
+concurrent retries, competing spending, opposing transfers,
+authorization, foreign-key lock compatibility, constraints, and
+rollback. Twelve local browser groups and nine hosted browser groups
+passed with no JavaScript errors. A local twenty-thousand-row temporary
+benchmark showed the source/time index avoiding a full scan and sort;
+those fixture rows and the temporary index removal were rolled back. The
+timings describe one local run, not hosted performance.”</p>
+<p>Run the read-only reconciliation query in Supabase. Show
+artifacts/test-results.txt and hosted-browser-results.json. Use the
+current query-evidence.txt if discussing exact timings. Do not claim
+backup restoration or production-scale load tests were completed.</p>
+<h2 id="minutes-to-8-minutes-future-milestones-and-close">7 minutes to 8
+minutes Future milestones and close</h2>
+<p>“Milestone five focuses on hosted operations, representative
+concurrency, monitoring, and a backup/restore drill. Milestone six
+extends account invitations and revocations, pagination, reversals, and
+the audit or ledger model. Milestone seven measures scale, revisits
+query optimization, improves accessibility, and completes the final
+evaluation.</p>
+<p>“Our current demonstration covers the public application and a real
+hosted PostgreSQL transaction. All balances and payments are simulated.
+Thank you.”</p>
+<h1 id="practical-recording-checklist">Practical recording
+checklist</h1>
+<ul>
+<li>Open the public URL and its <code>/api/health</code> first. Allow
+Render’s free service to wake up, then verify login before starting the
+recording.</li>
+<li>Keep Sai and Siddhardth in separate browser sessions. Retrieve their
+private synthetic passwords from the ignored local file before sharing
+or recording the screen.</li>
+<li>Open the editable ER diagram, SQL function, current test output, and
+Supabase SQL editor in advance.</li>
+<li>Have docs/recording-demo.sql ready. Copy the actual new receipt ID
+after the recorded payment.</li>
+<li>Show before and after balances, then reconciliation. Additional
+transfers change the values; never present old snapshots as current
+balances.</li>
+<li>Record one video with one representative. Name both teammates and
+all four milestones, then future milestones 5 through 7.</li>
+<li>Replace proposed contribution statements only with work each
+teammate confirms. Preserve the accurate Codex disclosure and follow the
+instructor’s AI policy.</li>
+</ul>
 </body>
 </html>

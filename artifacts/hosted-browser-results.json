@@ -1,0 +1,36 @@
+{
+  "completed": true,
+  "url": "https://paylink-radiant690s-projects.vercel.app",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "timestamp_utc": "2026-10-26T03:34:09.885517+00:00",
+  "database": "Supabase PostgreSQL 17.11",
+  "project_ref": "wktoypofpksgbjwtadrn",
+  "synthetic_recording_data_retained": true,
+  "representative_transfer": {
+    "id": "38cf87a4-4f82-44ab-bea1-3011579a6a2c",
+    "amount_cents": 1234,
+    "source_account_id": "7b072aff-8007-44b1-a899-f7051cc79a70",
+    "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+    "before_cents": {
+      "7b072aff-8007-44b1-a899-f7051cc79a70": 100000,
+      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 100000
+    },
+    "after_cents": {
+      "7b072aff-8007-44b1-a899-f7051cc79a70": 98766,
+      "2418c2b2-a1d3-41e3-b06b-6ae2543135a4": 101234
+    }
+  },
+  "reconciliation_discrepancies": 0,
+  "passed": [
+    "Public registration/sign-in with private passwords; published local demo login disabled",
+    "Simulated account creation persisted in Supabase",
+    "Joint ownership created in public UI and visible in the second isolated session",
+    "Public UI transfer committed exactly once: sender -1234, recipient +1234 cents in Supabase",
+    "Hosted identical retries return one ID; changed payload, non-owner and insufficient funds rejected without balance changes",
+    "Reloaded history, exact transfer details, real CSV download and recipient receipt verified",
+    "Second owner spends shared funds through the own-account transfer UI",
+    "Hosted insights and 390px mobile layout render without overflow",
+    "Hosted reconciliation: zero discrepancies; no browser JavaScript errors"
+  ],
+  "javascript_errors": []
+}

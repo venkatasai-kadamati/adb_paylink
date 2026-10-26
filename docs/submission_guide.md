@@ -1,131 +1,120 @@
-# PayLink — midterm submission and internal knowledge-transfer guide
+---
+title: "PayLink Midterm Submission and Recording Guide"
+author: "Sai Kadamati and Siddhardth"
+---
 
-## What to submit
+# Recording readiness
 
-The supplied assignment text requests **one video per team**, narrated by one representative explaining progress and each teammate's contributions. Only one team submission is needed. The materials do not specify an exact video duration or written-report length. Suggested internal format: a **7–9 minute video**, supported by the report, editable ER model, SQL, and validation evidence. This is a recommendation, not an invented course requirement.
+The public app is live at <https://paylink-radiant690s-projects.vercel.app>. Its path is Next.js on Vercel, FastAPI on Render, and the private five-table PostgreSQL schema on Supabase in primary-org/paylink. Nine hosted browser acceptance groups passed on this Mac, including actual committed transfers and zero balance reconciliation differences. The Mac also passed 25 database/API tests and 12 local browser workflow groups. See validation.md for evidence and boundaries.
 
-The current artifact package contains the application source, backend, database migrations, synthetic local seed, ER diagram sources, normalization/design analysis, report, browser screenshots, tests, SQL exercises, and deployment instructions. **The live public website and hosted Supabase verification are still pending account/tool access.** Do not record a hosted-success claim until the deployment acceptance checklist passes.
+One representative records one video for the team; one representative submits it. The script below is designed for about eight minutes. This duration is a practical suggestion, not a claim about an instructor-imposed limit. Keep the public app and the actual Supabase project visible during the database demo. No real money or bank integrations are involved.
 
-## Contribution split: assigned responsibility, pending team confirmation
+Private synthetic profile passwords are stored only in the ignored `.local/recording-users.json` on the setup Mac. Open that file privately to sign in as `sai` and `siddhardth`. Do not put it in the submission, show it on video, or use the public local-only demo password on the hosted app. Use a normal Chrome window for Sai and an Incognito window for Siddhardth so their cookies stay separate.
 
-The implementation was produced with Codex assistance in this session. The following is a balanced **recommended ownership split** for review, explanation, follow-up changes, and the video. It is not a fabricated historical record of authorship. Each teammate should run the work, explain the design, make/record their actual contributions, and update the final attribution.
+# Submission package
 
-| Area | Sai — proposed responsibility | Siddhardth — proposed responsibility | Evidence to prepare |
-|---|---|---|---|
-| Requirements and modeling | Financial rules, FDs/candidate keys, account/transfer constraints | ER diagram, cardinalities, joint ownership, relational translation | Explain keys, bridge table, and source/destination roles together. |
-| Database implementation | Five-table DDL, restricted role, transfer locks/idempotency, migrations | Seed/catalog review, dictionary, advanced SQL joins/aggregation/window examples | Run migrations and queries; show the schema and no duplicated bank facts. |
-| Application | FastAPI routes, Argon2id/session identity, DB calls, exception/rollback handling | Next.js/TypeScript views, responsive styling, account/recipient/transfer flows, CSV and insights | Demonstrate identity-to-ownership validation and UI-to-DB data flow. |
-| Validation and delivery | Concurrency/integrity tests, reconciliation, index/EXPLAIN investigation | Browser E2E, visual/mobile checks, screenshots, report/video, deployment configuration | Review test outputs; capture the public app and actual Supabase results after access works. |
+Submit the video and the deliverables requested by the instructor: application source, the midterm report, database design analysis, editable ER model, and supporting SQL/evidence. The Markdown sources have corresponding PDF, Word, and HTML exports under docs/. The native editable ER source is er-diagram.drawio; er-diagram.mmd and er-diagram.dot are alternate editable sources. A PNG alone is not an editable model.
 
-Suggested speaking balance if one representative records: name both teammates at the start, then explicitly credit each assigned/confirmed area. If Sai narrates, use “Siddhardth owns…” only after he confirms it; if Siddhardth narrates, mirror the wording for Sai. Replace proposed assignments with actual verified work before submission.
+The source repository is <https://github.com/venkatasai-kadamati/adb_paylink> on main. Validation artifacts distinguish local test fixtures, which were cleaned up, from hosted synthetic recording rows, which remain available. Backup/restore, crash recovery, and production-scale load testing have not been demonstrated.
 
-## Four incremental milestones
+# Proposed contribution split
 
-1. **Domain and design.** Agree on simulation scope, five entities, many-to-many joint ownership, candidate keys, and an editable ER diagram. Deliverables: proposal alignment, relationship model, FD/normalization notes. Exit criterion: both teammates can justify why ownership is a separate relation.
-2. **Reliable data layer.** Implement versioned DDL, keys/constraints, synthetic sample data, account opening, and the transfer function. Deliverables: recreation scripts, dictionary, advanced SQL examples. Exit criterion: clean migration, correct FK/uniqueness rules, and reconciliation with no differences.
-3. **End-to-end application.** Integrate FastAPI authentication and database access with Next.js accounts, recipient lookup, transfer review, history, CSV, and insights. Exit criterion: a signed-in user can transfer and both parties see the persisted result.
-4. **Validation and midterm demonstration.** Run integrity/concurrency/rollback tests, examine index plans, capture desktop/mobile evidence, and assemble the report/video. Local checks have been performed. **The required public deployment and hosted Supabase acceptance portion is pending**; do not mark the entire milestone complete until the live site and DB are verified.
+Codex generated and revised the implementation and supporting materials. This table proposes responsibility for review, explanation, follow-up work, and presentation. It does not assign historical authorship. Each teammate should replace proposed ownership with a truthful statement of their actual work before submitting.
 
-## Follow-on milestones 5, 6, and 7
+| Area | Sai proposed review responsibility | Siddhardth proposed review responsibility |
+|---|---|---|
+| Requirements and modeling | Financial invariants, candidate keys, functional dependencies | ER cardinalities, ownership bridge, relational mapping |
+| Database | DDL, constraints, transfer locks, idempotency, restricted role | Dictionary, synthetic catalog, joins, aggregates, running balances |
+| Application | FastAPI identity, parameterized SQL, error and rollback paths | Next.js flows, joint ownership, history, CSV, insights, mobile layout |
+| Verification and delivery | Integrity/concurrency tests, reconciliation, EXPLAIN | Browser evidence, screenshots, report, video, hosted acceptance |
 
-- **5 — Hosted completion and operations:** connect Supabase primary-org/paylink, deploy, run isolated hosted acceptance, capture UI plus Supabase evidence, and test a backup/restore procedure. Resolving the existing deployment blocker is the first task; it is not optional future polish.
-- **6 — Model and security extensions:** immutable double-entry ledger/audit model, reversals, pagination, joint-owner invitations/revocations, stronger identity lifecycle, and explicit revised invariants.
-- **7 — Performance and final evaluation:** representative load, workload skew, repeatable query-plan comparisons, multi-worker validation, accessibility refinement, and final course presentation.
+Safe narration: “Sai's proposed review focus is the transaction and backend layer; Siddhardth's is the interface and relationship documentation. We will attribute individual contributions only after each teammate confirms the work they performed.” If actual review and changes are confirmed, name the concrete work and evidence instead. Do not say either teammate independently implemented the generated code.
 
-## Video script and screen cues (approximately 8 minutes)
+# Four incremental milestones
 
-Use this as a rehearsal script; shorten or adapt to the instructor's actual requirements. Bracketed text is an instruction to the presenter, not spoken content. Do not read unverified authorship or deployment claims.
+1. **Domain and design.** Define the simulation, five entities, one-to-many bank/account relationship, many-to-many ownership, candidate keys, and normalization assumptions. Evidence: editable ER diagram and database-design analysis. The first increment explains the model before implementation.
+2. **Reliable database layer.** Add versioned migrations, PK/FK/UNIQUE/CHECK constraints, synthetic bank catalog, atomic account opening, joint-owner grants, and the transfer function. Evidence: runnable SQL, limited backend role, and reconciliation. This builds a database that can enforce its supported invariants.
+3. **End to end application.** Connect FastAPI sessions to Next.js registration, accounts, exact recipient lookup, transfer review and confirmation, own-account movement, history, CSV, and insights. Evidence: real user interactions and persisted database rows.
+4. **Validation and midterm delivery.** Run tests on this Mac, inspect live screenshots, compare query plans, publish the Vercel/Render/Supabase path, and assemble reports and recording materials. Evidence: 25 database/API tests, 12 local browser groups, nine hosted browser groups, and zero reconciliation discrepancies. The proposed individual review assignments still require team confirmation.
 
-### 0:00–0:25 — Introduction
+# Future milestones 5 through 7
 
-“Hello, this is our midterm progress update for CS 5600 Advanced Database Systems. I’m [presenter's name], and I’ll walk through our project, its database design, our implementation progress, and the next milestones.”
+- **5 Hosted operations and recovery.** Extend completed hosted acceptance with sustained hosted concurrency, monitoring, a backup/restore drill, and checks after redeploy and free-service wakeup. The hosted schema and basic public transfer path already work.
+- **6 Account and audit model.** Add invitation acceptance and coordinated owner revocation, pagination, reversals, and an evaluated immutable double-entry ledger. Immediate equal-owner grants are implemented; invitation/revocation and a ledger are future work.
+- **7 Scale and final evaluation.** Test representative load and skew, repeat query-plan measurements, validate multi-worker security and limiting, refine accessibility, and prepare the final course evaluation with measured evidence.
 
-[Show the title slide or report cover.]
+# Video script and screen cues
 
-### 0:25–0:50 — Teammate introductions and project title
+The script assumes Sai narrates the whole video. If Siddhardth records, replace only the introduction name and any confirmed personal-contribution statements. The remaining script is ready to rehearse; adapt only confirmed personal-contribution statements. Screen directions are not spoken.
 
-“Our team is Sai Kadamati and Siddhardth. The project is **PayLink: Simulated Peer-to-Peer Banking Transfers**. Sai’s assigned focus is the database transaction and backend layer. Siddhardth’s assigned focus is the interface, relationship documentation, and browser demonstration. We share design review and validation.”
+## 0 minutes to 1 minute Introduction and project
 
-[Replace “assigned focus” with actual confirmed contributions if the team has completed and documented them. Include the AI-assistance acknowledgment required by the course.]
+“Hello, I’m Sai Kadamati, presenting our CS 5600 Advanced Database Systems midterm update. Our teammates are Sai Kadamati and Siddhardth. Our project is PayLink, Simulated Peer-to-Peer Banking Transfers.
 
-### 0:50–1:25 — Project description
+“PayLink lets registered users create simulated checking and savings accounts, share an account with another registered user, find recipients, send funds, move funds between their own accounts, and inspect history and insights. It never connects to real banks or moves real money. The main database challenge is preserving both balances and the transfer record when requests overlap, fail, or repeat.”
 
-“PayLink lets a user open simulated accounts, find a recipient by username, email, or phone, send money, move money between owned accounts, and review activity. It also supports joint accounts. No real bank credentials or real funds are involved. The database problem is keeping both balances and the transfer record correct when requests overlap, fail, or are retried.”
+Show the report title, then the public app's simulation label and account overview.
 
-[Show the overview, then point out the simulation label and shared account.]
+## 1 minute to 2 minutes Four milestones and team responsibilities
 
-### 1:25–2:20 — Four milestones
+“Our first milestone defined the domain, ER model, keys, and normalization assumptions. The second built the five-table schema, constraints, account functions, and atomic transfer function. The third connected those rules to FastAPI authentication and the Next.js interface. The fourth tested the complete system on this Mac, published it with Supabase, and prepared the midterm evidence.
 
-“Our first milestone defined the domain and ER model. The second implemented the relational schema, constraints, sample data, and transaction rules. The third connected a FastAPI backend to a Next.js interface. The fourth covers tests, query plans, screenshots, and the midterm demonstration. We have local implementation evidence for these stages. Hosted Supabase and the public website are [pending / verified as shown next].”
+“Sai's proposed review focus is the database transaction and backend layer. Siddhardth's proposed focus is the interface, relationship documentation, and browser demonstration. These are review assignments, not a claim of independent implementation. Codex assisted with code, design documents, tests, deployments, and recording materials. We will report each teammate's actual contributions accurately.”
 
-[Choose the truthful status. Show the milestone table. Explain Sai's and Siddhardth's confirmed work rather than merely displaying names.]
+Show the four milestones and contribution table. If both teammates have confirmed actual work, replace the proposed-focus sentences with those facts. Keep the AI disclosure accurate.
 
-### 2:20–3:30 — Major database design and normalization
+## 2 minutes to 3 minutes Relational design and normalization
 
-“There are five core tables: Users, Banks, BankAccounts, AccountHolders, and Transfers. Banks to Accounts is one-to-many. Users to Accounts is many-to-many, so AccountHolders uses a composite user/account key. This lets two users share one account balance without copying the account.
+“There are five core tables: Users, Banks, BankAccounts, AccountHolders, and Transfers. A bank maintains many accounts. Users and accounts have a many-to-many relationship, represented by AccountHolders with a composite user and account key. Two joint owners therefore refer to the same account and balance.
 
-“We separated user, bank, account, ownership, and transfer facts to remove partial and transitive dependencies. For example, an account determines its bank ID, while the bank ID determines bank details. Storing a bank name on every account would repeat those facts. In the final relations, each declared nontrivial functional dependency starts from a candidate key, giving BCNF under our assumptions. Ownership and sufficient funds are transaction rules, not something normalization alone guarantees.”
+“Transfers has separate source and destination account foreign keys, plus an initiating user. Account numbers are unique within a bank. A transfer's idempotency key is unique within its initiating user.
 
-[Open the editable diagram, point to the bridge and the two account roles on Transfers, then show the FD table.]
+“We separated user, bank, account, ownership, and event facts to remove partial and transitive dependencies. For example, account ID determines bank ID, and bank ID determines bank details. Under the stated dependencies, each nontrivial determinant in a final relation is a superkey, giving BCNF. Ownership permission and sufficient funds remain transaction rules; normalization alone does not enforce them.”
 
-### 3:30–4:35 — Atomicity, concurrency, and duplicate prevention
+Open the editable diagram in diagrams.net. Point to the bridge, composite key, and the two account roles. If time is short, show the exported diagram and identify the editable source.
 
-“A transfer checks the signed-in actor's source ownership and locks both account rows in a consistent UUID order. It checks active state and funds before debiting one account, crediting the other, and inserting the event within one transaction. If any step fails, the whole transaction rolls back.
+## 3 minutes to 4 minutes Transactions and database implementation
 
-“A user-scoped idempotency key prevents a retry from sending the same payment twice. An identical retry returns the original transfer; a changed payload with the same key is rejected. Our tests also check competing spends, opposing transfers, joint owners, and direct balance-update permissions.”
+“Money is stored as integer USD cents. The backend derives the actor from a verified signed session cookie. It checks source ownership, locks both accounts in UUID order, checks active state and funds, debits one account, credits the other, and inserts one completed event in a single transaction. Success is returned after commit; failure rolls back the whole operation.
 
-[Show the transfer function excerpt and current test result. Explain READ COMMITTED plus row locks; do not claim arbitrary serializable behavior.]
+“READ COMMITTED plus those row locks serializes conflicting balance changes for this workflow. Consistent account ordering prevents the classic opposing-transfer deadlock. An actor-scoped advisory lock and unique idempotency constraint serialize retries: identical details return the original transfer, while changed details with the same key are rejected.
 
-### 4:35–5:10 — SQL and query processing
+“The backend database role cannot directly update balances or insert transfers. Controlled functions are in a private schema with fixed search paths and no PUBLIC execution. Joint-owner grants lock the target user before the account and enforce the same four-account limit as account creation.”
 
-“We use joins and aggregation for account totals and shared ownership, a window function for running balances, and a reconciliation query comparing stored balances against opening balances and transfer deltas. The local reconciliation found zero differences. A 20,000-row temporary microbenchmark compared account history with and without the composite index: the indexed plan avoided scanning and sorting the full fixture. These local timings are illustrative, not a production performance promise.”
+Show the relevant SQL function and the current 25-test Mac result. Explain one rollback or concurrency test that the narrator can actually describe.
 
-[Show the query and actual EXPLAIN output. The fixture and index drop were rolled back.]
+## 4 minutes to 6 minutes Public UI and database demo
 
-### 5:10–6:45 — Basic UI and database demo
+“I’m signed in as Sai on our public Vercel site. The API runs on Render and the data is stored in Supabase. These are synthetic accounts; creating one allocates one thousand simulated dollars. Shared expenses has two owners but one balance.
 
-[For the final requested video, use the **actual public website** and the **actual Supabase project** after deployment. Until then, local rehearsal is only a rehearsal.]
+“I’ll send twelve dollars and thirty-four cents to Siddhardth. Recipient lookup uses an exact username, email, or phone. The review shows the source, destination, amount, and remaining balance. Confirming gives us a transfer ID.
 
-“I’ll sign in as Sai. Here are the simulated accounts, including one jointly held account. I’ll send $12.34 to Siddhardth. The review screen shows the source, destination, amount, and remaining balance. After confirmation, the receipt gives us a transfer ID.
+“Using that exact ID in Supabase, we can see one transfer row. The sender is lower by one thousand two hundred thirty-four cents and the recipient is higher by the same amount. Reloading preserves the receipt. In Siddhardth's separate session, it appears as received. I can also move funds from an account he jointly owns.
 
-“Now we can use that exact ID to inspect the row in Supabase. We should see one transfer, a source balance lower by 1,234 cents, and the destination higher by the same amount. Reloading the app preserves the payment. In Siddhardth’s session, it appears as received. An insufficient-funds request is rejected and leaves the balances unchanged.”
+“An insufficient-funds attempt is rejected. Our automated hosted check additionally retried the same idempotency key and confirmed one payment, and rejected a non-owner source and changed payload without further balance changes.”
 
-[Have the source and destination balances recorded **before** sending. Show only the relevant rows and no credentials. Run the read-only reconciliation query; zero rows means no discrepancies. Show the mobile screenshot briefly if time permits.]
+Before sending, record both actual balances. Afterward, copy the new transfer ID. In the Supabase SQL editor use docs/recording-demo.sql, replacing the example ID with the new receipt ID. Show the event and both accounts; do not read a prepared before/after number if you sent an additional payment. Show history, CSV download, and Insights briefly. Avoid password fields, connection strings, role credentials, and cookies on screen.
 
-### 6:45–7:30 — Contributions and progress recap
+## 6 minutes to 7 minutes SQL evidence and validation
 
-“[Sai's confirmed work and evidence]. [Siddhardth's confirmed work and evidence]. The integration tests and browser checks cover the important correctness paths. [State hosted completion or the remaining deployment blocker accurately].”
+“We use joins for bank and ownership details, aggregation for account and insight totals, a window function for running balances, and a reconciliation query that compares stored balances with opening balances plus incoming minus outgoing transfers. The hosted reconciliation returns zero differences.
 
-[Each teammate should supply one concrete example they can explain: a locking decision for Sai, and a UI-to-database/browser assertion or relationship/query decision for Siddhardth.]
+“On this Mac, twenty-five database and API tests passed, including concurrent retries, competing spending, opposing transfers, authorization, foreign-key lock compatibility, constraints, and rollback. Twelve local browser groups and nine hosted browser groups passed with no JavaScript errors. A local twenty-thousand-row temporary benchmark showed the source/time index avoiding a full scan and sort; those fixture rows and the temporary index removal were rolled back. The timings describe one local run, not hosted performance.”
 
-### 7:30–8:10 — What's next: milestones 5–7
+Run the read-only reconciliation query in Supabase. Show artifacts/test-results.txt and hosted-browser-results.json. Use the current query-evidence.txt if discussing exact timings. Do not claim backup restoration or production-scale load tests were completed.
 
-“Milestone five completes hosted acceptance and operational checks, including live Supabase evidence and a recovery exercise. Milestone six extends the account and audit model with reversals, owner management, and a stronger ledger. Milestone seven focuses on representative performance tests, query optimization, accessibility, and the final evaluation. Thank you.”
+## 7 minutes to 8 minutes Future milestones and close
 
-[If hosted acceptance is already finished, say that this part of milestone five is complete and identify the next operational checks.]
+“Milestone five focuses on hosted operations, representative concurrency, monitoring, and a backup/restore drill. Milestone six extends account invitations and revocations, pagination, reversals, and the audit or ledger model. Milestone seven measures scale, revisits query optimization, improves accessibility, and completes the final evaluation.
 
-## Recording checklist
+“Our current demonstration covers the public application and a real hosted PostgreSQL transaction. All balances and payments are simulated. Thank you.”
 
-- One teammate records and one representative submits one video for the team.
-- Confirm the instructor permits this AI assistance and include an accurate disclosure.
-- Review the report and edit contribution assignments to actual work.
-- Use the stable public deployment; avoid recording free-tier cold-start delays.
-- Use only synthetic data and avoid displaying cookies, password fields, connection strings, or secret panels.
-- Keep two signed-in sessions available, one for each user; shared cookies in one browser profile will replace the prior session.
-- Record balances before/after a transfer; show the exact transfer ID in Supabase and the app.
-- Rehearse the insufficient-funds rejection and idempotency explanation.
-- Confirm audio, readable zoom, and the instructor's accepted video format/upload destination.
-- Keep the editable diagram and source report as supporting materials; submit extra files only if requested by the assignment.
+# Practical recording checklist
 
-## Knowledge-transfer questions for both teammates
-
-1. Why is `user_id` not a column on BankAccounts? What anomaly would that cause for a joint account?
-2. Why are money values cents rather than floating point?
-3. What is the difference between a PK, alternate key, FK, and the idempotency key pair?
-4. Which rules come from SQL constraints and which require the transaction function?
-5. What happens if two payments try to spend the same balance? Why lock both rows in one order?
-6. Why does nullable phone uniqueness not make it an unconditional candidate key?
-7. What does the running-balance query prove, and what does zero-row reconciliation mean?
-8. Why can the browser not receive `paylink_api` credentials? What does SECURITY DEFINER change?
-9. Which claims are locally tested and which require live Supabase validation?
-10. What did each teammate actually contribute, and which parts were generated with assistance?
+- Open the public URL and its `/api/health` first. Allow Render's free service to wake up, then verify login before starting the recording.
+- Keep Sai and Siddhardth in separate browser sessions. Retrieve their private synthetic passwords from the ignored local file before sharing or recording the screen.
+- Open the editable ER diagram, SQL function, current test output, and Supabase SQL editor in advance.
+- Have docs/recording-demo.sql ready. Copy the actual new receipt ID after the recorded payment.
+- Show before and after balances, then reconciliation. Additional transfers change the values; never present old snapshots as current balances.
+- Record one video with one representative. Name both teammates and all four milestones, then future milestones 5 through 7.
+- Replace proposed contribution statements only with work each teammate confirms. Preserve the accurate Codex disclosure and follow the instructor's AI policy.

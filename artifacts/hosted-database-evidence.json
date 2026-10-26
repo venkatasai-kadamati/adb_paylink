@@ -1,0 +1,292 @@
+{
+  "timestamp_utc": "2026-10-26T03:48:59.270168+00:00",
+  "project_ref": "wktoypofpksgbjwtadrn",
+  "identity": {
+    "current_user": "paylink_api",
+    "version": "PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit"
+  },
+  "client_tls": {
+    "in_use": true,
+    "mode": "verify-full",
+    "trusted_ca": "backend/certs/supabase-ca.crt"
+  },
+  "tables": [
+    {
+      "tablename": "account_holders",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "bank_accounts",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "banks",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "transfers",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "users",
+      "rowsecurity": true
+    }
+  ],
+  "constraints": [
+    {
+      "relation": "paylink.account_holders",
+      "conname": "account_holders_account_id_fkey",
+      "definition": "FOREIGN KEY (account_id) REFERENCES paylink.bank_accounts(id)"
+    },
+    {
+      "relation": "paylink.account_holders",
+      "conname": "account_holders_pkey",
+      "definition": "PRIMARY KEY (user_id, account_id)"
+    },
+    {
+      "relation": "paylink.account_holders",
+      "conname": "account_holders_user_id_fkey",
+      "definition": "FOREIGN KEY (user_id) REFERENCES paylink.users(id)"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_account_number_check",
+      "definition": "CHECK ((account_number ~ '^[0-9]{12}$'::text))"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_account_type_check",
+      "definition": "CHECK ((account_type = ANY (ARRAY['checking'::text, 'savings'::text])))"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_balance_cents_check",
+      "definition": "CHECK (((balance_cents >= 0) AND (balance_cents <= '900000000000000'::bigint)))"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_bank_id_account_number_key",
+      "definition": "UNIQUE (bank_id, account_number)"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_bank_id_fkey",
+      "definition": "FOREIGN KEY (bank_id) REFERENCES paylink.banks(id)"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_label_check",
+      "definition": "CHECK (((length(label) >= 1) AND (length(label) <= 60)))"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_opening_balance_cents_check",
+      "definition": "CHECK (((opening_balance_cents >= 0) AND (opening_balance_cents <= '900000000000000'::bigint)))"
+    },
+    {
+      "relation": "paylink.bank_accounts",
+      "conname": "bank_accounts_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "relation": "paylink.banks",
+      "conname": "banks_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "relation": "paylink.banks",
+      "conname": "banks_routing_number_check",
+      "definition": "CHECK ((routing_number ~ '^[0-9]{9}$'::text))"
+    },
+    {
+      "relation": "paylink.banks",
+      "conname": "banks_routing_number_key",
+      "definition": "UNIQUE (routing_number)"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_amount_cents_check",
+      "definition": "CHECK (((amount_cents >= 1) AND (amount_cents <= 100000000)))"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_check",
+      "definition": "CHECK ((source_account_id <> destination_account_id))"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_destination_account_id_fkey",
+      "definition": "FOREIGN KEY (destination_account_id) REFERENCES paylink.bank_accounts(id)"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_initiated_by_fkey",
+      "definition": "FOREIGN KEY (initiated_by) REFERENCES paylink.users(id)"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_initiated_by_idempotency_key_key",
+      "definition": "UNIQUE (initiated_by, idempotency_key)"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_memo_check",
+      "definition": "CHECK ((length(memo) <= 140))"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "relation": "paylink.transfers",
+      "conname": "transfers_source_account_id_fkey",
+      "definition": "FOREIGN KEY (source_account_id) REFERENCES paylink.bank_accounts(id)"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_email_check",
+      "definition": "CHECK (((email = lower(email)) AND (email ~ '^[^@[:space:]]+@[^@[:space:]]+\\.[^@[:space:]]+$'::text)))"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_email_key",
+      "definition": "UNIQUE (email)"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_full_name_check",
+      "definition": "CHECK (((length(full_name) >= 1) AND (length(full_name) <= 80)))"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_phone_check",
+      "definition": "CHECK (((phone IS NULL) OR (phone ~ '^\\+[1-9][0-9]{7,14}$'::text)))"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_phone_key",
+      "definition": "UNIQUE (phone)"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_username_check",
+      "definition": "CHECK ((username ~ '^[a-z][a-z0-9_]{2,29}$'::text))"
+    },
+    {
+      "relation": "paylink.users",
+      "conname": "users_username_key",
+      "definition": "UNIQUE (username)"
+    }
+  ],
+  "functions": [
+    {
+      "proname": "add_account_holder",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=pg_catalog, paylink"
+      ]
+    },
+    {
+      "proname": "execute_transfer",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=pg_catalog, paylink"
+      ]
+    },
+    {
+      "proname": "open_account",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=pg_catalog, paylink"
+      ]
+    }
+  ],
+  "balances": [
+    {
+      "id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+      "label": "Everyday checking",
+      "balance_cents": 101334,
+      "opening_balance_cents": 100000
+    },
+    {
+      "id": "7b072aff-8007-44b1-a899-f7051cc79a70",
+      "label": "Everyday checking",
+      "balance_cents": 98766,
+      "opening_balance_cents": 100000
+    },
+    {
+      "id": "8009ddd0-daa6-450a-91b5-e5a1b574817c",
+      "label": "Rainy day fund",
+      "balance_cents": 100000,
+      "opening_balance_cents": 100000
+    },
+    {
+      "id": "d1e46870-2d5d-49c2-a496-4ef1a2c2544f",
+      "label": "Shared expenses",
+      "balance_cents": 99900,
+      "opening_balance_cents": 100000
+    }
+  ],
+  "owners": [
+    {
+      "label": "Everyday checking",
+      "username": "sai"
+    },
+    {
+      "label": "Everyday checking",
+      "username": "siddhardth"
+    },
+    {
+      "label": "Rainy day fund",
+      "username": "sai"
+    },
+    {
+      "label": "Shared expenses",
+      "username": "sai"
+    },
+    {
+      "label": "Shared expenses",
+      "username": "siddhardth"
+    }
+  ],
+  "transfers": [
+    {
+      "id": "38cf87a4-4f82-44ab-bea1-3011579a6a2c",
+      "source_account_id": "7b072aff-8007-44b1-a899-f7051cc79a70",
+      "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+      "amount_cents": 1234,
+      "memo": "Hosted acceptance f3fba76c"
+    },
+    {
+      "id": "7f4c5dd5-faec-4598-96ba-508635434aae",
+      "source_account_id": "d1e46870-2d5d-49c2-a496-4ef1a2c2544f",
+      "destination_account_id": "2418c2b2-a1d3-41e3-b06b-6ae2543135a4",
+      "amount_cents": 100,
+      "memo": "Hosted joint-owner acceptance"
+    }
+  ],
+  "privileges": [
+    {
+      "table": "bank_accounts",
+      "direct_insert": false,
+      "direct_update": false
+    },
+    {
+      "table": "account_holders",
+      "direct_insert": false,
+      "direct_update": false
+    },
+    {
+      "table": "transfers",
+      "direct_insert": false,
+      "direct_update": false
+    }
+  ],
+  "reconciliation": []
+}

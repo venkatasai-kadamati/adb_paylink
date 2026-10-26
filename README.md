@@ -2,7 +2,7 @@
 
 A simulated peer-to-peer banking application for **CS 5600 Advanced Database Systems, Fall 2026**. Next.js + TypeScript frontend, FastAPI backend, and a five-relation PostgreSQL schema designed for Supabase. No real banks or funds.
 
-**Deployment status:** the app is implemented and locally validated; **a public website and hosted Supabase connection have not been provisioned or verified**. The requested live deliverable remains pending external account access. See [deployment instructions](docs/deployment.md).
+**Live app:** <https://paylink-radiant690s-projects.vercel.app> — Next.js on Vercel, FastAPI on Render, and private PostgreSQL on Supabase primary-org/paylink. Mac validation passed 25 database/API tests, 12 local browser groups, and nine hosted browser groups. Both databases reconcile with zero discrepancies. See [current evidence](docs/validation.md) and [deployment details](docs/deployment.md). Render's free service may need to wake before recording.
 
 Start on macOS with [the local setup guide](docs/local-macos.md). For a new ChatGPT Desktop session, use [the handoff notes](docs/HANDOFF.md).
 
@@ -15,11 +15,11 @@ Start on macOS with [the local setup guide](docs/local-macos.md). For a new Chat
 - [Normalization and data dictionary](docs/database-design.md)
 - [SQL demonstrations](docs/queries.sql) · [Actual query-plan evidence](artifacts/query-evidence.txt)
 - [Live-browser test evidence](artifacts/browser-results.json) · [Test results](artifacts/test-results.txt)
-- [Screenshots and validation scope](docs/validation.md)
+- [Screenshots and validation scope](docs/validation.md) · [Read-only recording SQL](docs/recording-demo.sql)
 
 ## Local development
 
-Requires Python 3.12, Node 24, npm 11, Docker, and Chromium for browser checks. The checkout is already isolated; use it directly rather than creating a worktree.
+Requires Python 3.12, Node 24, npm 11, PostgreSQL 16 (native Homebrew on macOS or Docker on Linux), and Chromium for browser checks. The checkout is already isolated; use it directly rather than creating a worktree.
 
 ```bash
 cd adb_paylink
@@ -29,9 +29,9 @@ cd adb_paylink
 .venv/bin/python scripts/browser_test.py
 ```
 
-`install.sh` creates ignored `.env` credentials with restrictive permissions, starts PostgreSQL 15 in a Docker volume, applies versioned migrations, seeds only synthetic local data, and builds the frontend. Repeating the migrations and seed preserves existing demo records. PostgreSQL is bound to loopback, not the public network. Running `local_db.py` with a hosted admin URL deliberately refuses to create or modify a local container; use the hosted flow instead.
+`install.sh` creates ignored `.env` credentials with restrictive permissions, starts an isolated PostgreSQL 16 cluster (native on macOS, Docker on Linux), applies versioned migrations, seeds only synthetic local data, and builds the frontend. Repeating the migrations and seed preserves existing demo records. PostgreSQL is bound to loopback, not the public network. Running `local_db.py` with a hosted admin URL deliberately refuses to create or modify a local container; use the hosted flow instead.
 
-Demo profiles: `sai` or `siddhardth`; local demo password: `PaylinkDemo!2026`. The sign-in page also has demo buttons. These are deliberately published local teaching credentials, **not production secrets**. The seed helper refuses to seed these passwords into a hosted project. For a public academic demo, provision synthetic users with private passwords using the hosted flow, and set `NEXT_PUBLIC_DEMO_ENABLED=false` (the deployment default).
+**Local test profiles only:** `sai` or `siddhardth`; local demo password: `PaylinkDemo!2026`. The sign-in page also has demo buttons. These are deliberately published local teaching credentials, **not production secrets**. The seed helper refuses to seed these passwords into a hosted project. The deployed app uses private synthetic passwords from the ignored `.local/recording-users.json` on the setup Mac and has `NEXT_PUBLIC_DEMO_ENABLED=false`. Do not publish that file.
 
 ## Architecture
 
@@ -41,8 +41,10 @@ Five base tables: `users`, `banks`, `bank_accounts`, `account_holders`, `transfe
 
 ## Verification
 
-The integration suite runs against a real database and covers atomicity, insufficient funds, same-key concurrent retries, conflicting payloads, overspending, opposing transfers, authorization, inactive accounts, constraints, shared ownership, and post-update rollback. The browser suite uses actual Chromium interactions and independently checks committed database rows and both balance deltas. It cleans up only its synthetic test records. Do not point the seeded integration/browser suite at a live project containing meaningful user data.
+The Mac integration suite runs against a real database and covers atomicity, insufficient funds, same-key concurrent retries, conflicting payloads, overspending, opposing transfers, authorization, inactive accounts, constraints, shared ownership, and post-update rollback. The browser suite uses actual Chromium interactions and independently checks committed database rows and both balance deltas. It cleans up only its synthetic test records. Do not point the seeded integration/browser suite at a live project containing meaningful user data.
 
 `query_evidence.py` temporarily inserts 20,000 plan-fixture rows and drops an index inside a savepoint, then rolls both back. **Run only on the isolated local teaching database**; the generated output is a microbenchmark, not a production latency guarantee.
 
 See the report for known limitations and the AI-assistance disclosure draft. Team contribution assignments are proposed ownership, not a claim about work independently performed by either teammate.
+
+For hosted acceptance from this configured Mac, run `.venv/bin/python scripts/hosted_browser_test.py` and `.venv/bin/python scripts/hosted_evidence.py`. These use private synthetic profiles and a read-only database verifier; they do not run local admin fixtures or plan benchmarks on Supabase. The Accounts screen supports immediate equal joint-owner grants; invitation acceptance and revocation remain future work.

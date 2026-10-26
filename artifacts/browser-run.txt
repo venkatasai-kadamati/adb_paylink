@@ -3,7 +3,10 @@ PASS: UI transfer committed: source −1234 cents, recipient +1234 cents, one hi
 PASS: Reload persistence, activity search, details, and real CSV download
 PASS: Own-account transfer through UI
 PASS: Simulated account creation persisted with exactly $1,000 funding
+PASS: Joint owner added through UI; one account and two ownership rows
 PASS: Second signed-in user sees received transfer and shared account
+PASS: New joint owner can spend the shared balance through UI
+PASS: SQL-driven insights render after transfers
 PASS: 390px mobile layout, navigation, and no page overflow
 PASS: Registration and new-user empty state
 PASS: No browser JavaScript errors

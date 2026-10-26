@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
+  <meta name="generator" content="pandoc 3.12.1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>database-design</title>
   <style>
-code{white-space: pre-wrap;}
+
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
 ul.task-list[class]{list-style: none;}
@@ -19,7 +23,6 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
   <style type="text/css">@page{size:A4;margin:18mm 17mm 20mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#203545;font-size:10.5pt;line-height:1.55;max-width:900px;margin:0 auto}h1,h2,h3{font-weight:600;line-height:1.25;page-break-after:avoid;color:#1b3856}h1{font-size:19pt;letter-spacing:-.4px;margin:30px 0 13px;border-bottom:1px solid #dbe5f2;padding-bottom:8px}h2{font-size:14pt;margin:24px 0 10px}h3{font-size:11.5pt;margin:18px 0 8px}p{margin:9px 0 13px}a{color:#245ade;overflow-wrap:anywhere}strong{font-weight:600}header#title-block-header{padding:22px 0 28px;border-bottom:3px solid #245ade;margin-bottom:28px}header h1.title{font-size:29pt;letter-spacing:-1px;line-height:1.12;border:0;margin:0 0 18px;padding:0}header .subtitle{font-size:12pt;color:#68819b}header .author{font-size:11pt;color:#7f8e9c}table{border-collapse:collapse;width:100%;font-size:8.3pt;margin:16px 0 22px;table-layout:auto}th{background:#edf2fb;color:#36577d;text-align:left;font-size:8.5pt}th,td{border:1px solid #dfe7ef;padding:8px;vertical-align:top;overflow-wrap:anywhere}tr{page-break-inside:avoid}thead{display:table-header-group}code{font-size:.88em;font-family:monospace;background:#f1f4f8;padding:1px 3px;border-radius:3px;overflow-wrap:anywhere}pre{background:#f4f7fb;padding:14px;border-left:3px solid #8ba8dc;white-space:pre-wrap;font-size:9pt;line-height:1.5}pre code{background:transparent;padding:0}img{max-width:100%;height:auto}figure{margin:20px 0;page-break-inside:avoid}figcaption{font-size:8pt;color:#8495a6;margin-top:8px}li{margin:5px 0}blockquote{border-left:3px solid #9db6de;padding-left:18px;color:#64829d;margin-left:0}hr{border:0;border-top:1px solid #e1e8f1;margin:25px 0}
 </style>
@@ -37,10 +40,12 @@ transfer has exactly one source, one destination, and one initiating
 user. Only completed transfers are stored; a rejected transfer rolls
 back and is not represented as a completed or pending row.</p>
 <p>The application schema has exactly five base relations, matching the
-proposal. <code>paylink_meta.migrations</code> records deployment
-versions and is not a sixth domain entity. <code>paylink</code> is
-private: it must not be added to the exposed Supabase Data API
-schemas.</p>
+proposal. It runs on hosted Supabase PostgreSQL 17.11 in
+primary-org/paylink; independent Mac integration tests use isolated
+Homebrew PostgreSQL 16.15. <code>paylink_meta.migrations</code> records
+deployment versions and is not a sixth domain entity.
+<code>paylink</code> is private: it must not be added to the exposed
+Supabase Data API schemas.</p>
 <h2 id="editable-conceptual-and-logical-model">Editable conceptual and
 logical model</h2>
 <p>Open <code>er-diagram.drawio</code> in diagrams.net using
@@ -57,26 +62,26 @@ preserve editability; exporting a PNG alone loses it.
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Relationship</th>
 <th>Cardinality</th>
 <th>Implementation and participation</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Bank → BankAccount</td>
 <td>1 : 0..N</td>
 <td>Each account has exactly one non-null bank FK. A bank can have no
 accounts.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>User ↔︎ BankAccount</td>
 <td>M : N</td>
 <td><code>account_holders(user_id, account_id)</code>, with a composite
 PK and two FKs. A user may initially own zero accounts.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>BankAccount → AccountHolder</td>
 <td>1 : 1..N intended</td>
 <td>The account-opening function inserts account and first holder
@@ -84,18 +89,18 @@ atomically. SQL FKs alone do <strong>not</strong> enforce an account
 having at least one holder; administrative SQL can violate that
 minimum.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>User → Transfer</td>
 <td>1 : 0..N</td>
 <td>One non-null <code>initiated_by</code> FK per transfer; not a
 duplicate of account ownership.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>BankAccount → Transfer (source)</td>
 <td>1 : 0..N</td>
 <td>One non-null source FK.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>BankAccount → Transfer (destination)</td>
 <td>1 : 0..N</td>
 <td>One non-null destination FK; source must differ.</td>
@@ -114,14 +119,14 @@ balance; account-scoped queries deduplicate by account ID.</p>
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Relation</th>
 <th>Keys</th>
 <th>Non-key attributes and domains</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>users</code></td>
 <td>PK <code>id</code>; alternate keys <code>username</code>,
 <code>email</code></td>
@@ -129,13 +134,13 @@ balance; account-scoped queries deduplicate by account ID.</p>
 lowercase unique email; nullable unique E.164-style phone; full_name
 1–80 chars; Argon2id password_hash; created_at timestamptz.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>banks</code></td>
 <td>PK <code>id</code>; alternate key <code>routing_number</code></td>
 <td>Nine-digit routing string; name text. A name is not assumed
 unique.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>bank_accounts</code></td>
 <td>PK <code>id</code>; alternate key
 <code>(bank_id, account_number)</code></td>
@@ -144,13 +149,13 @@ checking/savings type; shared label 1–60 chars; bigint balance and
 opening balance in cents, both 0–900,000,000,000,000; active boolean;
 created_at.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>account_holders</code></td>
 <td>PK <code>(user_id, account_id)</code>; both FKs</td>
 <td>joined_at depends on the complete ownership pair. No redundant user
 name, bank name, or balance.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>transfers</code></td>
 <td>PK <code>id</code>; alternate key
 <code>(initiated_by, idempotency_key)</code></td>
@@ -262,9 +267,10 @@ transfers.</li>
 <li>Find an existing transfer. Return it if every input matches; reject
 reuse with different details. The unique constraint is an additional
 database safeguard.</li>
-<li>Verify source ownership from AccountHolders. Future
-ownership-revocation workflows must coordinate with this check;
-revocation is not implemented now.</li>
+<li>Verify source ownership from AccountHolders. Existing owners may add
+an equal joint owner through the controlled add_account_holder function.
+Revocation is not implemented; any future revocation workflow must
+coordinate with transfer authorization.</li>
 <li>Lock both account rows in ascending UUID order with
 <code>FOR UPDATE</code>.</li>
 <li>Check that both exist, are active, and source balance covers the
@@ -281,13 +287,14 @@ same-key retries serialize even if payload account pairs differ. There
 is no claim of serializability for arbitrary future workflows.</p>
 <p>The private backend role cannot directly UPDATE balances, DELETE
 history, or INSERT transfers. It can read application relations,
-register users, and invoke the controlled functions. The functions are
-SECURITY DEFINER, have fixed <code>pg_catalog,paylink</code> search
-paths, and are not executable by PUBLIC. The actor UUID comes from a
-verified backend session, <strong>not</strong> an untrusted browser
-field. The backend role remains a trusted identity boundary: possession
-of its DB credentials permits impersonating actors via the function,
-which is why they must never reach the frontend.</p>
+register users, and invoke the controlled opening, ownership, and
+transfer functions. The functions are SECURITY DEFINER, have fixed
+<code>pg_catalog,paylink</code> search paths, and are not executable by
+PUBLIC. The actor UUID comes from a verified backend session,
+<strong>not</strong> an untrusted browser field. The backend role
+remains a trusted identity boundary: possession of its DB credentials
+permits impersonating actors via the function, which is why they must
+never reach the frontend.</p>
 <h2 id="balance-reconciliation-and-recovery">Balance reconciliation and
 recovery</h2>
 <p>For account a:</p>
@@ -320,5 +327,28 @@ microbenchmark is in <code>artifacts/query-evidence.txt</code>. Its
 synthetic rows and index drop are rolled back. It isolates the
 outgoing-history query; it does not prove that the entire UI history
 query or hosted workload has the same plan or speed.</p>
+<h2 id="joint-ownership-and-calendar-semantics">Joint ownership and
+calendar semantics</h2>
+<p>The Accounts screen lets an existing owner add a registered user by
+exact username. This simulation grants immediate equal read/spending
+access; it does not implement invitation acceptance or removal. The
+function locks the target user row before the account row, checks active
+status and the acting user’s ownership, returns an existing ownership
+pair on retry, checks the target’s four-account limit, and inserts only
+the ownership row. No balance or opening balance changes. The
+user-before-account order matches account opening and serializes
+competing allocation requests for the same target. Transfers lock
+account rows in UUID order; insertion also takes an implicit FK KEY
+SHARE lock on the initiating user. Allocation functions use FOR NO KEY
+UPDATE on the target user so this FK check remains compatible. Using FOR
+UPDATE there could introduce a user/account lock cycle; a regression
+test holds a joint-owner grant open while an unrelated transfer by that
+target completes.</p>
+<p>Monthly and seven-day insights use America/Chicago calendar
+boundaries. Timestamps remain timestamptz instants and the browser
+formats them locally. Internal transfers are excluded from monthly money
+in/out and included on both sides of the weekly volume chart. History
+and CSV are limited to the latest 200 rows; account totals count each
+account once per signed-in user.</p>
 </body>
 </html>

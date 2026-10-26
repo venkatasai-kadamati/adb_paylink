@@ -1,0 +1,23 @@
+{
+  "project_ref": "wktoypofpksgbjwtadrn",
+  "security": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"result\":{\"lints\":[]}}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "performance": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"result\":{\"lints\":[{\"name\":\"unused_index\",\"title\":\"Unused Index\",\"level\":\"INFO\",\"facing\":\"EXTERNAL\",\"categories\":[\"PERFORMANCE\"],\"description\":\"Detects if an index has never been used and may be a candidate for removal.\",\"remediation\":\"https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index\",\"count\":1,\"findings\":[{\"detail\":\"Index \\\\`transfers_source_time_idx\\\\` on table \\\\`paylink.transfers\\\\` has not been used\",\"metadata\":{\"name\":\"transfers\",\"type\":\"table\",\"schema\":\"paylink\"},\"observed_at\":\"2026-10-26T03:38:09.523Z\"}]}]}}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  }
+}
