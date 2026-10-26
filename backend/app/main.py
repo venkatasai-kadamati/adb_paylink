@@ -29,12 +29,18 @@ ph = PasswordHasher()
 DUMMY_HASH = ph.hash('not-a-real-user-password')
 pool: ConnectionPool
 
+def configure_connection(conn):
+    # Supavisor can ignore libpq startup options. Set each persistent session
+    # explicitly, then leave it idle before the pool hands it to a request.
+    conn.execute("SET TIME ZONE 'America/Chicago'")
+    conn.execute("SET statement_timeout = '10s'")
+    conn.commit()
+
 @asynccontextmanager
 async def lifespan(app):
     global pool
     pool = ConnectionPool(os.environ['DATABASE_URL'], min_size=1, max_size=8, open=False,
-                          kwargs={'row_factory': dict_row,
-                                  'options': '-c statement_timeout=10000 -c timezone=America/Chicago'})
+                          kwargs={'row_factory': dict_row}, configure=configure_connection)
     pool.open(wait=True)
     yield
     pool.close()

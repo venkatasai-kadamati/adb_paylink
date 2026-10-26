@@ -11,6 +11,15 @@ def test_authentication_and_csrf():
         assert r.status_code==200
         assert 'HttpOnly' in r.headers['set-cookie'] and 'SameSite=strict' in r.headers['set-cookie']
         assert client.get('/api/me').json()['username']=='sai'
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        today=datetime.now(ZoneInfo('America/Chicago')).date()
+        assert [d['day'] for d in client.get('/api/insights').json()['weekly']]==[
+            (today-timedelta(days=i)).isoformat() for i in range(6,-1,-1)]
+        import backend.app.main as main
+        with main.pool.connection() as conn:
+            assert conn.execute('SHOW TimeZone').fetchone()['TimeZone']=='America/Chicago'
+            assert conn.execute('SHOW statement_timeout').fetchone()['statement_timeout']=='10s'
         accounts=client.get('/api/accounts').json()
         assert len(accounts)>=3
         assert all('account_number' not in a for a in accounts)
