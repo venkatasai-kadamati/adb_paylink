@@ -1,0 +1,16 @@
+{
+  "completed": true,
+  "url": "https://paylink-radiant690s-projects.vercel.app",
+  "timestamp_utc": "2026-10-28T03:07:10.064079+00:00",
+  "passed": [
+    "Login page offers User 1 Sai and User 2 Siddhardth before the regular form",
+    "Other usernames rejected; unauthenticated access and cross-origin requests blocked",
+    "User 1 Sai opens with one click and no password; signed session survives reload",
+    "User 2 Siddhardth opens with one click and no password; signed session survives reload",
+    "Isolated sessions retain the correct profile and can find each other as recipients",
+    "Sign-out stays isolated; normal password validation and account balances preserved",
+    "390px mobile login has no overflow; no browser JavaScript errors"
+  ],
+  "javascript_errors": [],
+  "account_data_unchanged": true
+}

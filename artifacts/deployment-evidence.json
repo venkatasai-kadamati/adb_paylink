@@ -1,25 +1,25 @@
 {
-  "observed_at_chicago": "2026-10-25",
+  "observed_at_chicago": "2026-10-27",
   "public_url": "https://paylink-radiant690s-projects.vercel.app",
   "api_url": "https://paylink-api-xgfo.onrender.com",
   "supabase_project_ref": "wktoypofpksgbjwtadrn",
   "render": {
-    "id": "dep-dbfd0t5g1s2s73fb0eug",
+    "id": "dep-dbgmdap42hec73dgifh0",
     "status": "live",
-    "commit": "eed5ec1f73b8bb74120555a227e0f3b782365c67",
-    "finished_at": "2026-10-26T04:01:36.315165Z"
+    "commit": "de5e660b2e292d73e576127182b3cff00eb71c97"
   },
   "vercel": {
-    "id": "dpl_Xz6jd7k31qqHGuGucH6MSh14Ucm6",
+    "id": "dpl_HD9PS4idWLYxFiHerivTKaAVkzyf",
     "state": "READY",
-    "commit": "01d855cf59e68eb2fda7897990418d97a592e49c",
-    "url": "paylink-lvey7t6ur-radiant690s-projects.vercel.app"
+    "commit": "fd010298d7c7de8273c9ee52be27c4269723bd4a",
+    "url": "paylink-l7db47pk3-radiant690s-projects.vercel.app"
   },
   "notes": [
-    "Render runs the $200 signup backend from eed5ec1; Vercel also includes final guide layout and typography polish from 01d855c.",
-    "Four Supabase migrations are applied; new funding defaults preserve existing balances.",
-    "Public browser workflows and onboarding checks passed on this Mac; reconciliation found zero discrepancies.",
-    "Later evidence-only commits do not change runtime source.",
+    "Public quick test sign-in enabled for synthetic Sai (User 1) and Siddhardth (User 2) only.",
+    "Both public buttons verified through real browser interactions, correct isolated sessions, reload and logout.",
+    "27 Mac database/API tests passed; seven public quick-test browser groups passed without JavaScript errors or account-data changes.",
+    "No passwords exposed or reset; regular registered profiles still require passwords.",
+    "Later documentation and evidence commits can be newer than runtime source.",
     "Free Render service may sleep; wake the app before recording."
   ]
 }
