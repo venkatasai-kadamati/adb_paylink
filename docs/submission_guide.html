@@ -47,13 +47,14 @@ duration is a practical suggestion, not a claim about an
 instructor-imposed limit. Keep the public app and the actual Supabase
 project visible during the database demo. No real money or bank
 integrations are involved.</p>
-<p>Private synthetic profile passwords are stored only in the ignored
-<code>.local/recording-users.json</code> on the setup Mac. Open that
-file privately to sign in as <code>sai</code> and
-<code>siddhardth</code>. Do not put it in the submission, show it on
-video, or use the public local-only demo password on the hosted app. Use
-a normal Chrome window for Sai and an Incognito window for Siddhardth so
-their cookies stay separate.</p>
+<p>The login page has <strong>Quick test sign-in</strong>: choose
+<strong>User 1 · Sai</strong> or <strong>User 2 · Siddhardth</strong>,
+with no password needed. Use a normal Chrome window for Sai and an
+Incognito window for Siddhardth so their cookies stay separate. Both are
+shared simulated test profiles. Regular registrations still use
+passwords; private fallback test credentials remain only in ignored
+<code>.local/recording-users.json</code> and must not appear in the
+submission or video.</p>
 <h1 id="submission-package">Submission package</h1>
 <p>Submit the video and the deliverables requested by the instructor:
 application source, the midterm report, database design analysis,
@@ -300,9 +301,9 @@ checklist</h1>
 <li>Open the public URL and its <code>/api/health</code> first. Allow
 Render’s free service to wake up, then verify login before starting the
 recording.</li>
-<li>Keep Sai and Siddhardth in separate browser sessions. Retrieve their
-private synthetic passwords from the ignored local file before sharing
-or recording the screen.</li>
+<li>Keep Sai and Siddhardth in separate browser sessions. Use the
+quick-test button for each profile; no credentials need to appear on
+screen.</li>
 <li>Open the editable ER diagram, SQL function, current test output, and
 Supabase SQL editor in advance.</li>
 <li>Have docs/recording-demo.sql ready. Copy the actual new receipt ID

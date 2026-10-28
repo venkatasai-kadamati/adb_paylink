@@ -9,7 +9,7 @@ The public app is live at <https://paylink-radiant690s-projects.vercel.app>. Its
 
 One representative records one video for the team; one representative submits it. The script below is designed for about eight minutes. This duration is a practical suggestion, not a claim about an instructor-imposed limit. Keep the public app and the actual Supabase project visible during the database demo. No real money or bank integrations are involved.
 
-Private synthetic profile passwords are stored only in the ignored `.local/recording-users.json` on the setup Mac. Open that file privately to sign in as `sai` and `siddhardth`. Do not put it in the submission, show it on video, or use the public local-only demo password on the hosted app. Use a normal Chrome window for Sai and an Incognito window for Siddhardth so their cookies stay separate.
+The login page has **Quick test sign-in**: choose **User 1 · Sai** or **User 2 · Siddhardth**, with no password needed. Use a normal Chrome window for Sai and an Incognito window for Siddhardth so their cookies stay separate. Both are shared simulated test profiles. Regular registrations still use passwords; private fallback test credentials remain only in ignored `.local/recording-users.json` and must not appear in the submission or video.
 
 # Submission package
 
@@ -112,7 +112,7 @@ Run the read-only reconciliation query in Supabase. Show artifacts/test-results.
 # Practical recording checklist
 
 - Open the public URL and its `/api/health` first. Allow Render's free service to wake up, then verify login before starting the recording.
-- Keep Sai and Siddhardth in separate browser sessions. Retrieve their private synthetic passwords from the ignored local file before sharing or recording the screen.
+- Keep Sai and Siddhardth in separate browser sessions. Use the quick-test button for each profile; no credentials need to appear on screen.
 - Open the editable ER diagram, SQL function, current test output, and Supabase SQL editor in advance.
 - Have docs/recording-demo.sql ready. Copy the actual new receipt ID after the recorded payment.
 - Show before and after balances, then reconciliation. Additional transfers change the values; never present old snapshots as current balances.
