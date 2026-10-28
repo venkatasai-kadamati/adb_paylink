@@ -220,7 +220,9 @@ def recipients(user:User,q:str=''):
     # Exact matching avoids exposing a public customer directory.
     with pool.connection() as c:
         return c.execute('''SELECT u.id,u.username,u.full_name,a.id AS account_id,b.name AS bank_name,
-          right(a.account_number,4) AS last4 FROM paylink.users u
+          right(a.account_number,4) AS last4, a.account_type,
+          (SELECT count(*) FROM paylink.account_holders h2 WHERE h2.account_id=a.id) AS holder_count
+          FROM paylink.users u
           JOIN paylink.account_holders h ON h.user_id=u.id JOIN paylink.bank_accounts a ON a.id=h.account_id
           JOIN paylink.banks b ON b.id=a.bank_id
           WHERE (u.username=%s OR u.email=%s OR u.phone=%s) AND u.id<>%s AND a.active

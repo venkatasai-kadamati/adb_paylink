@@ -89,7 +89,11 @@ def test_registered_workflow_authorization_insights_csv():
             assert d.post(f'/api/accounts/{a}/holders',json={'username':other}).status_code==409
             assert c.post(f'/api/accounts/{b}/holders',json={'username':other}).status_code==200
             assert any(x['id']==b and x['holder_count']==2 for x in d.get('/api/accounts').json())
-            assert c.get('/api/recipients',params={'q':other+'@test.dev'}).json()[0]['username']==other
+            recipient_accounts=c.get('/api/recipients',params={'q':other+'@test.dev'}).json()
+            by_id={row['account_id']:row for row in recipient_accounts}
+            assert by_id[dest]['username']==other and by_id[dest]['holder_count']==1
+            assert by_id[b]['holder_count']==2 and by_id[b]['account_type']=='checking'
+            assert all('balance_cents' not in row and 'account_number' not in row for row in recipient_accounts)
             before=c.get('/api/insights').json()['monthly']
             body={'source_account_id':a,'destination_account_id':dest,'amount_cents':1234,'memo':'=1+1','idempotency_key':str(uuid4())}
             r=c.post('/api/transfers',json=body);assert r.status_code==201,r.text

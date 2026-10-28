@@ -3,6 +3,7 @@
 Creates/retains clearly synthetic recording data. Never invokes local seed, admin
 fixtures, or the query-plan benchmark against hosted PostgreSQL.
 """
+import re
 import csv
 import io
 import json
@@ -109,7 +110,7 @@ try:
     dialog.get_by_placeholder('e.g. siddhardth').fill('siddhardth@paylink.test')
     dialog.get_by_role('button',name='Find',exact=True).click()
     last4=db('SELECT right(account_number,4) FROM paylink.bank_accounts WHERE id=%s',(dest,))[0][0]
-    dialog.get_by_role('button',name='Siddhardth @siddhardth · Meridian Bank ••'+last4).click()
+    dialog.get_by_role('button',name=re.compile(r'Siddhardth @siddhardth · Meridian Bank ••'+re.escape(last4))).click()
     dialog.get_by_role('button',name='Continue',exact=True).click()
     dialog.get_by_label('From account').select_option(source)
     dialog.get_by_role('textbox',name='Amount',exact=True).fill('999999')

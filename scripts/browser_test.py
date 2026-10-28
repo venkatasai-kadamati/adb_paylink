@@ -1,4 +1,5 @@
 """Live Chromium E2E. Database assertions verify UI writes; test mutations are reversed."""
+import re
 import json
 import platform
 from datetime import datetime, timezone
@@ -33,7 +34,7 @@ try:
     dialog=page.get_by_role('dialog')
     dialog.get_by_placeholder('e.g. siddhardth').fill('siddhardth')
     dialog.get_by_role('button',name='Find',exact=True).click()
-    dialog.get_by_role('button',name='Siddhardth @siddhardth · Meridian Bank').click()
+    dialog.get_by_role('button',name=re.compile(r'Siddhardth @siddhardth · Meridian Bank')).click()
     dialog.get_by_role('button',name='Continue',exact=True).click()
     dialog.get_by_label('From account').select_option(str(source[0]))
     dialog.get_by_role('textbox',name='Amount',exact=True).fill('999999')
@@ -108,10 +109,15 @@ try:
     page.get_by_role('button',name='Move between accounts').click()
     dialog=page.get_by_role('dialog')
     dialog.get_by_label('From account').select_option(str(account[0]))
+    expect(dialog.locator('.transfer-account-detail')).to_contain_text('Joint')
+    expect(dialog.locator('.shared-account-note')).to_contain_text('all owners')
     dialog.get_by_label('To account').select_option(str(recipient[0]))
+    expect(dialog.locator('.transfer-destination-detail')).to_contain_text('Personal')
     dialog.get_by_role('textbox',name='Amount',exact=True).fill('0.50')
     dialog.get_by_placeholder('A little note goes a long way').fill('Browser validation — joint spend')
     dialog.get_by_role('button',name='Review transfer').click()
+    expect(dialog.locator('.receipt-list')).to_contain_text('Joint')
+    expect(dialog.locator('.receipt-list')).to_contain_text('Personal')
     dialog.get_by_role('button',name='Confirm & send').click()
     expect(dialog.get_by_role('heading',name='Transfer completed')).to_be_visible()
     transfer_ids.append(db("SELECT id FROM paylink.transfers WHERE memo='Browser validation — joint spend' ORDER BY created_at DESC LIMIT 1")[0][0])
