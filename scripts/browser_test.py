@@ -24,7 +24,7 @@ try:
     browser=launch_chromium(p)
     context=browser.new_context(viewport={'width':1440,'height':1100},timezone_id='America/Chicago')
     page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
-    page.goto('http://localhost:3000');page.get_by_role('button',name='Explore as Sai').click()
+    page.goto('http://localhost:3000');page.get_by_role('button',name='Sign in as Sai (User 1)').click()
     expect(page.get_by_role('heading',name='Hello, Sai.')).to_be_visible()
     expect(page.get_by_text('Everyday checking',exact=True)).to_be_visible()
     source=db("SELECT a.id,a.balance_cents FROM paylink.bank_accounts a JOIN paylink.account_holders h ON h.account_id=a.id JOIN paylink.users u ON u.id=h.user_id WHERE u.username='sai' AND a.label='Everyday checking'")[0]

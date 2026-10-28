@@ -39,7 +39,7 @@ Hosted correctness checks establish the tested workflow, not production-scale co
 | Files | Scope |
 |---|---|
 | artifacts/01-sign-in.png through 08-mobile.png | Current Mac local validation, including temporary receipts that were cleaned up |
-| artifacts/hosted-01-sign-in.png | Public sign-in with local demo shortcuts disabled |
+| artifacts/hosted-01-sign-in.png | Public sign-in; current quick-test UI is in artifacts/quick-test-01-login.png |
 | artifacts/hosted-02-overview.png | Hosted accounts and joint-owner badge |
 | artifacts/hosted-03-review.png and hosted-04-receipt.png | Actual public payment review and committed receipt |
 | artifacts/hosted-05-details.png and hosted-06-recipient.png | Reloaded exact event and second user's receipt |
@@ -53,3 +53,7 @@ The local helper temporarily inserts 20,000 artificial event rows in a savepoint
 ## Updated signup and interface acceptance
 
 New registration automatically opens exactly one $200 Everyday checking account. Both balances begin at 20000 cents, and the initial ownership is inserted atomically. The Mac API suite tests that account-opening failure rolls the entire signup back without issuing a session. The browser suite checks signup funding, $200 additional accounts, readable desktop/mobile layouts, and the hover/click testing guide. Existing hosted balances were compared before and after the default migration and are unchanged. The new hosted onboarding check is recorded separately in artifacts/hosted-onboarding-results.json.
+
+## Quick test sign-in
+
+The login page offers User 1 Sai and User 2 Siddhardth without entering credentials. The opt-in API only accepts those two synthetic profiles, retains CSRF/origin checks and the standard signed HttpOnly session, and never resets account data. Normal registered profiles still require passwords. The Mac passed 27 database/API tests, including disabled-mode, allowlist, origin, session and logout checks. Seven browser acceptance groups are recorded in artifacts/quick-test-browser-results.json with desktop/mobile screenshots.

@@ -39,7 +39,8 @@ try:
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.goto(BASE,wait_until='networkidle')
     expect(page.get_by_role('button',name='How to test',exact=True)).to_be_visible()
-    assert page.get_by_role('button',name='Explore as Sai').count()==0
+    expect(page.get_by_role('button',name='Sign in as Sai (User 1)')).to_be_visible()
+    expect(page.get_by_role('button',name='Sign in as Siddhardth (User 2)')).to_be_visible()
     screenshot(page,'01-sign-in')
     page.get_by_role('button',name='How to test',exact=True).hover()
     expect(page.get_by_role('tooltip')).to_contain_text('$200')

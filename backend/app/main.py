@@ -77,6 +77,9 @@ class Login(BaseModel):
     username: str = Field(min_length=1, max_length=254)
     password: str = Field(min_length=1, max_length=128)
 
+class DemoLogin(BaseModel):
+    username: Literal['sai', 'siddhardth']
+
 class Register(BaseModel):
     username: str = Field(pattern=r'^[a-z][a-z0-9_]{2,29}$')
     email: str = Field(max_length=254, pattern=r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
@@ -164,6 +167,20 @@ def login(body: Login, response: Response):
     if not row: raise HTTPException(401,'Incorrect username or password')
     session(response,row['id'])
     return {'id':row['id'],'username':row['username'],'full_name':row['full_name']}
+
+@app.post('/api/auth/demo', dependencies=[Depends(rate_limit)])
+def demo_login(body: DemoLogin, response: Response):
+    # Explicitly public synthetic profiles only. Regular users still require
+    # /auth/login; passwords and existing balances are never changed here.
+    if os.getenv('PUBLIC_DEMO_ENABLED', 'false').lower() != 'true':
+        raise HTTPException(404, 'Quick test sign-in is not enabled')
+    with pool.connection() as c:
+        row = c.execute('SELECT id,username,full_name FROM paylink.users WHERE username=%s',
+                        (body.username,)).fetchone()
+    if not row:
+        raise HTTPException(503, 'Test profile is temporarily unavailable')
+    session(response, row['id'])
+    return row
 
 @app.post('/api/auth/logout')
 def logout(response: Response):

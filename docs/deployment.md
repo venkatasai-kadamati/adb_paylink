@@ -21,7 +21,7 @@ The Mac cannot resolve/use this project's direct IPv6 database endpoint, so the 
 
 Render stores DATABASE_URL and JWT_SECRET privately. Its DATABASE_URL certificate path is `/app/backend/certs/supabase-ca.crt`, copied into the image. APP_ORIGIN is the exact public Vercel origin above; COOKIE_SECURE=true. No admin connection is installed on the long-running API. The Docker command uses exec so termination signals reach Uvicorn. The service has one worker and free-plan limitations.
 
-Vercel uses frontend as its root, Node 24, `npm ci`, and `npm run build`. BACKEND_URL points to the Render API; NEXT_PUBLIC_DEMO_ENABLED=false. Production is publicly accessible. BACKEND_URL is compiled into Next.js rewrites, so changing it requires a rebuild. Database URLs, JWT secrets, and service keys must never be NEXT_PUBLIC variables.
+Vercel uses frontend as its root, Node 24, `npm ci`, and `npm run build`. BACKEND_URL points to the Render API; NEXT_PUBLIC_DEMO_ENABLED=true; Render PUBLIC_DEMO_ENABLED=true enables the two explicitly public synthetic test profiles. Production is publicly accessible. BACKEND_URL is compiled into Next.js rewrites, so changing it requires a rebuild. Database URLs, JWT secrets, and service keys must never be NEXT_PUBLIC variables.
 
 The private synthetic recording passwords live in `.local/recording-users.json` on the Mac. The ignored `.env.hosted` contains the restricted database connection and local hosted-mode session secret. Neither belongs in Git, a submission ZIP, screenshots, or video. Public local demo-password seeding remains blocked against hosted URLs.
 

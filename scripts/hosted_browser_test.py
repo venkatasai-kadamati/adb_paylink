@@ -44,7 +44,8 @@ def screenshot(page,name):page.screenshot(path=str(ROOT/'artifacts'/('hosted-'+n
 def login(page,profile):
     page.goto(BASE,wait_until='networkidle')
     expect(page.get_by_role('heading',name='Welcome back.')).to_be_visible()
-    assert page.get_by_role('button',name='Explore as Sai').count()==0
+    expect(page.get_by_role('button',name='Sign in as Sai (User 1)')).to_be_visible()
+    expect(page.get_by_role('button',name='Sign in as Siddhardth (User 2)')).to_be_visible()
     screenshot(page,'01-sign-in')
     exists=db('SELECT id FROM paylink.users WHERE username=%s',(profile['username'],))
     if not exists:
@@ -84,7 +85,7 @@ try:
     for page in pages:page.on('pageerror',lambda e:errors.append(str(e)))
     sai,sid=pages
     for page,profile in zip(pages,profiles):login(page,profile)
-    record('Public registration/sign-in with private passwords; published local demo login disabled')
+    record('Public registration/sign-in with private passwords; public quick-test profiles available')
     source=account(sai,'sai','Everyday checking')
     savings=account(sai,'sai','Rainy day fund','savings')
     shared=account(sai,'sai','Shared expenses')

@@ -18,7 +18,7 @@ if not env.exists():
     with os.fdopen(os.open(env, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), 'w') as f:
         f.write(f'ADMIN_DATABASE_URL=postgresql://postgres:{admin}@127.0.0.1:54322/postgres\n'
                 f'DATABASE_URL=postgresql://paylink_api:{api}@127.0.0.1:54322/postgres\n'
-                f'JWT_SECRET={secrets.token_hex(48)}\nAPP_ORIGIN=http://localhost:3000\nCOOKIE_SECURE=false\n')
+                f'JWT_SECRET={secrets.token_hex(48)}\nAPP_ORIGIN=http://localhost:3000\nCOOKIE_SECURE=false\nPUBLIC_DEMO_ENABLED=true\n')
 frontend_env = ROOT / 'frontend/.env.local'
 if not frontend_env.exists():
     frontend_env.write_text('NEXT_PUBLIC_DEMO_ENABLED=true\n')

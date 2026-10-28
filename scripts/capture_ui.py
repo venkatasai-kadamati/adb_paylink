@@ -8,7 +8,7 @@ with sync_playwright() as p:
     page.goto('http://localhost:3000')
     expect(page.get_by_role('heading',name='Welcome back.')).to_be_visible()
     page.screenshot(path=str(ROOT/'artifacts/01-sign-in.png'),full_page=True)
-    page.get_by_role('button',name='Explore as Sai').click()
+    page.get_by_role('button',name='Sign in as Sai (User 1)').click()
     expect(page.get_by_role('heading',name='Hello, Sai.')).to_be_visible()
     expect(page.get_by_text('Everyday checking',exact=True)).to_be_visible()
     page.screenshot(path=str(ROOT/'artifacts/02-overview.png'),full_page=True)

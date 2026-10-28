@@ -1,6 +1,29 @@
 from fastapi.testclient import TestClient
 from backend.app.main import app
 
+def test_quick_demo_signin_is_explicit_and_limited_to_two_profiles(monkeypatch):
+    import backend.app.main as main
+    main.attempts.clear()
+    with TestClient(app) as client:
+        monkeypatch.setenv('PUBLIC_DEMO_ENABLED', 'false')
+        assert client.post('/api/auth/demo', json={'username':'sai'}).status_code==404
+        assert client.get('/api/me').status_code==401
+        monkeypatch.setenv('PUBLIC_DEMO_ENABLED', 'true')
+        assert client.post('/api/auth/demo', json={'username':'another_user'}).status_code==422
+        assert client.post('/api/auth/demo', json={'username':'sai'}, headers={'Origin':'https://evil.example'}).status_code==403
+        for username in ('sai','siddhardth'):
+            response=client.post('/api/auth/demo', json={'username':username})
+            assert response.status_code==200
+            assert response.json()['username']==username
+            assert 'password_hash' not in response.json()
+            assert 'HttpOnly' in response.headers['set-cookie']
+            assert client.get('/api/me').json()['username']==username
+            assert client.get('/api/accounts').json()
+            assert client.post('/api/auth/logout').status_code==200
+            assert client.get('/api/accounts').status_code==401
+        assert client.post('/api/auth/login',json={'username':'sai','password':'wrong'}).status_code==401
+    main.attempts.clear()
+
 def test_authentication_and_csrf():
     with TestClient(app) as client:
         assert client.get('/api/health').json()['database']=='connected'

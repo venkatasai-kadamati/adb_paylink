@@ -8,7 +8,7 @@ Current Mac evidence: 26 real database/API tests, 13 local Chromium groups, and 
 
 Read docs/validation.md for scope, deployment.md for destinations/configuration, submission_guide.md for the four milestones and complete video script, and recording-demo.sql for read-only live SQL. The representative receipt and exact before/after snapshot are in artifacts/hosted-browser-results.json; later transfers change current balances.
 
-Private synthetic Sai/Siddhardth passwords are in .local/recording-users.json, excluded from Git. The hosted app has no public demo shortcut. Do not seed the published local password into Supabase, expose credentials in screenshots, or run local admin fixtures/plan benchmarks remotely.
+Private synthetic Sai/Siddhardth passwords are in .local/recording-users.json, excluded from Git. The login page now exposes explicitly public quick-test buttons for Sai (User 1) and Siddhardth (User 2). PUBLIC_DEMO_ENABLED=true on Render enables only these two usernames; NEXT_PUBLIC_DEMO_ENABLED=true on Vercel shows the buttons. No password entry or reseeding is needed; existing balances/history remain. Do not seed the published local password into Supabase, expose credentials in screenshots, or run local admin fixtures/plan benchmarks remotely.
 
 The five domain tables remain users, banks, bank_accounts, account_holders and transfers. Joint-owner addition uses one bridge row, locks target user before account, enforces the four-account limit, and grants equal visibility/spending immediately. Invitations and removal are future work. Existing transfer functions retain UUID-ordered row locks, actor-scoped idempotency, atomic debit/credit/event, and rollback.
 

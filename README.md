@@ -31,7 +31,7 @@ cd adb_paylink
 
 `install.sh` creates ignored `.env` credentials with restrictive permissions, starts an isolated PostgreSQL 16 cluster (native on macOS, Docker on Linux), applies versioned migrations, seeds only synthetic local data, and builds the frontend. Repeating the migrations and seed preserves existing demo records. PostgreSQL is bound to loopback, not the public network. Running `local_db.py` with a hosted admin URL deliberately refuses to create or modify a local container; use the hosted flow instead.
 
-**Local test profiles only:** `sai` or `siddhardth`; local demo password: `PaylinkDemo!2026`. The sign-in page also has demo buttons. These are deliberately published local teaching credentials, **not production secrets**. The seed helper refuses to seed these passwords into a hosted project. The deployed app uses private synthetic passwords from the ignored `.local/recording-users.json` on the setup Mac and has `NEXT_PUBLIC_DEMO_ENABLED=false`. Do not publish that file.
+**Quick test profiles:** the sign-in page offers **User 1 · Sai** and **User 2 · Siddhardth**. Click either to open its shared simulated profile without a password. Use separate browser windows (one Incognito) to test both sides of a payment. This explicitly enabled shortcut accepts only `sai` and `siddhardth`; normal registered users still require passwords. `PUBLIC_DEMO_ENABLED=true` enables the API and `NEXT_PUBLIC_DEMO_ENABLED=true` shows the buttons. Local fixtures also retain the published teaching password `PaylinkDemo!2026`; hosted private passwords stay in ignored `.local/recording-users.json` and are never sent to the browser.
 
 ## Architecture
 
